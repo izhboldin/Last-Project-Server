@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Route::get('/product', [ProductController::class, 'index']);
-// Route::get('/product1', [ProductController::class, 'store']);
-Route::middleware('auth')
+Route::get('login', [AuthController::class, 'loginView'])->name('login');
+Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+
 // Route::middleware('auth')
-    ->resource('product', ProductController::class);
+//     ->resource('product', ProductController::class);
