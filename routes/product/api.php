@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/product', [ProductController::class, 'index']);
 // Route::get('/product1', [ProductController::class, 'store']);
-Route::middleware('auth')
+Route::middleware('auth:sanctum')
+    ->prefix('products')
+    ->group(function() {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{product}', [ProductController::class, 'get']);
+        Route::post('/', [ProductController::class, 'create']);
+        Route::post('/{product}', [ProductController::class, 'update']);
+        Route::delete('/{product}', [ProductController::class, 'delete']);
+    });
 // Route::middleware('auth')
-    ->resource('product', ProductController::class);
+//     ->resource('product', ProductController::class);

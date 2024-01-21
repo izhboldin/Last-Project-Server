@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class CreateCategoryRequest extends FormRequest
 {
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,11 +15,10 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer'],
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'price' => ['required', 'numeric'],
-            'category_id' => ['required', 'integer'],
+            'parent_category_id' => ['nullable', 'integer'],
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'is_main_category' => ['required', 'boolean'],
         ];
     }
 }

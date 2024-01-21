@@ -21,16 +21,15 @@
 <body>
 
     <div class="container mt-5">
-        <a href="{{route('product.create')}}" class="btn btn-primary mb-1">Создать</a>
+        <a href="{{route('categories.create')}}" class="btn btn-primary mb-1">Создать</a>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>user_id</th>
-                    <th>title</th>
+                    <th>parent_category_id</th>
+                    <th>name</th>
                     <th>description</th>
-                    <th>price</th>
-                    <th>category_id</th>
+                    <th>is_main_category</th>
                     <th>created_at</th>
                     <th>updated_at</th>
                     <th>Action</th>
@@ -38,22 +37,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($products as $product)
+                @foreach ($categories as $category)
                     <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->user_id }}</td>
-                        <td>{{ $product->title }}</td>
-                        <td>{{ $product->description }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->category_id }}</td>
-                        <td>{{ $product->created_at }}</td>
-                        <td>{{ $product->updated_at }}</td>
+                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->parent_category_id }}</td>
+                        <td>{{ $category->name }}</td>
+                        <td>{{ $category->description }}</td>
+                        <td>{{ $category->is_main_category ? 'true' : 'false'}}</td>
+                        <td>{{ $category->created_at }}</td>
+                        <td>{{ $category->updated_at }}</td>
                         <td>
-                            <a href="{{route('product.show', $product->id)}}" type="button" class="btn btn-primary">watch</a>
-                            <a href="{{route('product.edit', $product->id)}}" type="button" class="btn btn-success">edit</a>
+                            <a href="{{route('categories.show', $category->id)}}" type="button" class="btn btn-primary">watch</a>
+                            <a href="{{route('categories.edit', $category->id)}}" type="button" class="btn btn-success">edit</a>
                         </td>
                         <td>
-                            <form action="{{route('product.destroy', $product->id)}}" method="POST">
+                            <form action="{{route('categories.delete', $category->id)}}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger">delete</button>

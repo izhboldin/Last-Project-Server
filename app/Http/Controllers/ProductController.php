@@ -2,74 +2,100 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
+use App\Exceptions\CreateProductException;
+use App\Exceptions\DeleteProductException;
+use App\Exceptions\UpdateProductException;
+use App\Http\Requests\CreateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
+use App\Policies\CategoryPolicy;
+use App\Policies\ProductPolicy;
+use App\Services\ProductService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-
     /**
+     * Injected product service
      *
-     * @return view.blade
+     * @param ProductService
      */
+    private $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
+
     public function index()
     {
+        $this->authorize('read', Product::class);
+
         $products = Product::all();
-        return view('product.products', compact('products'));
+
+        return ProductResource::collection($products);
     }
 
-    /** redirect to create page
-     *
-     * @return view.blade
-     */
-    public function create()
+    public function get(Product $product)
     {
-        return view('product.create',);
+        $this->authorize('read', Product::class);
+
+        return new ProductResource($product);
     }
 
-    /** Store a newly created product in the database.
-     *
-     * @param \App\Http\Requests\ProductRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(ProductRequest $request)
+    public function create(CreateProductRequest $request)
     {
+        $this->authorize('create', Product::class);
+
         $data = $request->validated();
         $user = $request->user();
-        // следущую строку, сделать методом сервиса, и предавать туда $data и $user, ааааа, и обернуть в трайкечь
-        Product::create($data);
 
-        return redirect()->route('product.index');
+        try {
+            $product = $this->productService->create($user, $data);
+        } catch (CreateProductException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                ],400);
+        }
+
+        return new ProductResource($product);
     }
 
-    public function show(Product $product)
+    public function update(CreateProductRequest $request, Product $product)
     {
-        return view('product.show', compact('product'));
-    }
+        $this->authorize('update', Product::class);
 
-    public function edit(Product $product)
-    {
-        return view('product.edit', compact('product'));
-    }
-
-    public function update(ProductRequest $request, Product $product)
-    {
         $data = $request->validated();
-        $product->update($data);
+        try {
+            $this->productService->update($product, $data);
+        } catch (UpdateProductException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                ],400);
+        }
 
-        return redirect()->route('product.index');
+        return new ProductResource($product);
     }
 
-    /** delete product
-     *
-     * @param string $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Product $product)
+    public function delete(Product $product)
     {
-        $product->delete();
-        return redirect()->route('product.index');
+        $this->authorize('delete', Product::class);
+
+        try {
+            $this->productService->delete($product);
+        } catch (DeleteProductException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                ],400);
+        }
+
+        return new ProductResource($product);
     }
 }
