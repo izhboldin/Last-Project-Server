@@ -27,17 +27,15 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function myView(Request $request, string $id )
+    public function myView(Request $request, string $id)
     {
         $this->authorize('read', Category::class);
 
         $categories = Category::where('parent_category_id', '=', $id)->get();
+        $allQuantityCategory = Category::query()->count();
+        $quantityCategory = $categories->count();
 
-        //TODO IN NORMAL WAY
-        // $category = Category::find($request->get('category_id'));
-        // $categories = Category::myfuckingscope()->get();
-
-        return view('category.indexForParent', compact('categories'));
+        return view('category.index', compact('categories', 'id', 'allQuantityCategory', 'quantityCategory'));
     }
 
     /**
@@ -50,9 +48,11 @@ class CategoryController extends Controller
         $this->authorize('read', Category::class);
         // $categories = Category::all();
         $categories = Category::whereNull('parent_category_id')->get();
+        $id = null;
+        $allQuantityCategory = Category::query()->count();
+        $quantityCategory = $categories->count();
 
-
-        return view('category.index', compact('categories'));
+        return view('category.index', compact('categories', 'id', 'allQuantityCategory', 'quantityCategory' ));
     }
 
     public function create()

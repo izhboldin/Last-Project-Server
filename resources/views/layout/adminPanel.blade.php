@@ -9,9 +9,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
         * {
-           font-family: 'Cabin', sans-serif;
+            font-family: 'Cabin', sans-serif;
         }
 
         .sticky-top {
@@ -20,6 +27,7 @@
             height: 100vh;
             top: 0;
             z-index: 1020;
+
         }
     </style>
     <title> </title>
@@ -37,18 +45,23 @@
                             <h2 class="text-white text-center">BUE-SALE</h2>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active text-center" href="{{ route('home') }}">
-                                HOME
+                            <a class="nav-link active d-flex align-items-center justify-content-center"
+                                href="{{ route('home') }}">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>HOME</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active text-center" href="{{ route('user.index') }}">
-                                USERS
+                            <a class="nav-link active d-flex align-items-center justify-content-center"
+                                href="{{ route('user.index') }}">
+                                <span class="material-symbols-outlined">group</span>
+                                <span>USERS</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active text-center" href="{{ route('categories.index') }}">
-                                CATEGORIES
+                            <a class="nav-link active d-flex align-items-center justify-content-center" href="{{ route('categories.index') }}">
+                                <span class="material-symbols-outlined">category</span>
+                                <span>CATEGORIES</span>
                             </a>
                         </li>
                     </ul>
