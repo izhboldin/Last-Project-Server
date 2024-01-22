@@ -27,15 +27,17 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function myView(Request $request)
+    public function myView(Request $request, string $id )
     {
         $this->authorize('read', Category::class);
 
-        //TODO IN NORMAL WAY
-        $category = Category::find($request->get('category_id'));
-        $categories = Category::myfuckingscope()->get();
+        $categories = Category::where('parent_category_id', '=', $id)->get();
 
-        return view('category.view', compact('categories', 'category'));
+        //TODO IN NORMAL WAY
+        // $category = Category::find($request->get('category_id'));
+        // $categories = Category::myfuckingscope()->get();
+
+        return view('category.indexForParent', compact('categories'));
     }
 
     /**
@@ -45,10 +47,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // Auth::logout();
         $this->authorize('read', Category::class);
+        // $categories = Category::all();
+        $categories = Category::whereNull('parent_category_id')->get();
 
-        $categories = Category::all();
+
         return view('category.index', compact('categories'));
     }
 

@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\ExampleController;
-use App\Http\Controllers\TaskController ;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('welcome');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::resource('admin-panel', AdminPanelController::class);
 
-Route::resource('test', TaskController::class);
+Route::middleware('auth')
+    ->get('user', [UserController::class, 'index'])->name('user.index');
+
 
 Route::get('/example', [ExampleController::class, 'index']);
 
@@ -30,4 +35,3 @@ Route::get('/example', [ExampleController::class, 'index']);
 // Route::controller(TaskController::class)->group(function () {
 //     Route::get('/test', 'index');
 // });
-

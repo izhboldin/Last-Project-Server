@@ -12,9 +12,8 @@ class AdminPanelController extends Controller
      */
     public function index()
     {
-        $tests =Test::all();
 
-        return view('layout.adminPanel', ['tests' => $tests]);
+        return view('layout.adminPanel');
     }
 
     /**

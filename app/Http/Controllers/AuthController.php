@@ -21,12 +21,6 @@ class AuthController extends Controller
 
             Auth::login($user);
 
-            $user->tokens()
-                ->where('name', 'Token Name')
-                ->delete();
-
-            $user->createToken('Token Name')->plainTextToken;
-
             return redirect()->route('categories.index');
         } else {
             return response()->json([

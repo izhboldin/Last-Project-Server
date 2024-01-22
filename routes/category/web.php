@@ -14,6 +14,7 @@ Route::middleware('auth')
     ->prefix('categories')
     ->group(function () {
         Route::get('/',[CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/{category}/more',[CategoryController::class, 'myView'])->name('categories.more');
         Route::get('/create',[CategoryController::class, 'create'])->name('categories.create');
         Route::post('/',[CategoryController::class, 'store'])->name('categories.store');
         Route::get('/{category}',[CategoryController::class, 'show'])->name('categories.show');
