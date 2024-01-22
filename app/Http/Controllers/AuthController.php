@@ -27,7 +27,7 @@ class AuthController extends Controller
 
             $user->createToken('Token Name')->plainTextToken;
 
-            return redirect()->route('product.index');
+            return redirect()->route('categories.index');
         } else {
             return response()->json([
                 'message' => 'Неверный емейл, или пароль'

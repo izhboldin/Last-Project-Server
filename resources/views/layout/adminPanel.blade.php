@@ -45,10 +45,8 @@
                 </div>
             </nav>
 
-            <!-- Page Content -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 mt-3">
-                <p>This is some example content. You can add more content here.</p>
-                <!-- Add more content as needed -->
+                @yield('content')
             </main>
         </div>
     </div>

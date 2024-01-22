@@ -9,7 +9,6 @@ use App\Exceptions\CreateProductException;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +16,7 @@ class ProductService
 {
     public function create(User $user, $data)
     {
-        $productData = $this->makeProductData($data);
+        // $productData = $this->makeProductData($data);
         $category = Category::findOrFail($data['category_id']);
 
         if ($category->children()->exists()) {

@@ -1,32 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <style>
-        .sticky-top {
-            position: -webkit-sticky;
-            position: sticky;
-            height: 100vh;
-            top: 0;
-            z-index: 1020;
-        }
-    </style>
-    <title> </title>
-</head>
-
-<body>
-
+@extends('layout.adminPanel')
+@section('content')
     <div class="container mt-5">
         <form action="{{ route('categories.store') }}" method="POST">
             @csrf
             <div class="form-group mb-2">
                 <label for="parent_category_id">parent_category_id</label>
                 <select class="form-control" id="parent_category_id" name="parent_category_id">
-                    <option value="" >empty</option>
+                    <option value="">empty</option>
                     @foreach ($categories as $category)
                         <option>{{ $category->id }}</option>
                     @endforeach
@@ -49,8 +29,8 @@
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" value="0" name="is_main_category"
-                    id="is_main_category2" checked>
+                <input class="form-check-input" type="radio" value="0" name="is_main_category" id="is_main_category2"
+                    checked>
                 <label class="form-check-label" for="is_main_category2">
                     No
                 </label>
@@ -67,7 +47,4 @@
 
         </form>
     </div>
-
-</body>
-
-</html>
+@endsection

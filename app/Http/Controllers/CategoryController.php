@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -26,7 +27,7 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function view(Request $request)
+    public function myView(Request $request)
     {
         $this->authorize('read', Category::class);
 
@@ -44,10 +45,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        // Auth::logout();
         $this->authorize('read', Category::class);
 
         $categories = Category::all();
-        return view('category.category', compact('categories'));
+        return view('category.index', compact('categories'));
     }
 
     public function create()
