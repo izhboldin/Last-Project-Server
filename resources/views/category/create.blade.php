@@ -4,11 +4,11 @@
         <form action="{{ route('categories.store') }}" method="POST">
             @csrf
             <div class="form-group mb-2">
-                <label for="parent_category_id">parent_category_id</label>
+                <label for="parent_category_id">parent_category_name</label>
                 <select class="form-control" id="parent_category_id" name="parent_category_id">
                     <option value="">empty</option>
                     @foreach ($categories as $category)
-                        <option>{{ $category->id }}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>

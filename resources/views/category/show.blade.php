@@ -12,7 +12,20 @@
                         <p class="card-text">is_main_category: {{ $category->is_main_category }}</p>
                         <p class="card-text">Created At: {{ $category->created_at->format('Y-m-d H:i:s') }}</p>
                         <p class="card-text">Updated At: {{ $category->updated_at->format('Y-m-d H:i:s') }}</p>
-                        <a href="{{ route('categories.index') }}" type="button" class="btn btn-success">back</a>
+
+                        <div class="row justify-content-between">
+                            <div class="col-3">
+                                <a href="{{ route('categories.index') }}" type="button" class="btn btn-success">back</a>
+                            </div>
+                            <div class="col-3">
+                                <form action="{{ route('categories.delete', $category->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger">delete</button>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

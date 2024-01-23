@@ -7,6 +7,7 @@ use App\Exceptions\DeleteCategoryException;
 use App\Exceptions\UpdateCategoryException;
 
 use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\SearchRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
@@ -27,15 +28,21 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
+    private function getCategoryData($categories, $id = null)
+    {
+        $allQuantityCategory = Category::count();
+        $quantityCategory = $categories->count();
+
+        return compact('categories', 'id', 'allQuantityCategory', 'quantityCategory');
+    }
+
     public function myView(Request $request, string $id)
     {
         $this->authorize('read', Category::class);
 
         $categories = Category::where('parent_category_id', '=', $id)->get();
-        $allQuantityCategory = Category::query()->count();
-        $quantityCategory = $categories->count();
 
-        return view('category.index', compact('categories', 'id', 'allQuantityCategory', 'quantityCategory'));
+        return view('category.index', $this->getCategoryData($categories, $id));
     }
 
     /**
@@ -46,13 +53,9 @@ class CategoryController extends Controller
     public function index()
     {
         $this->authorize('read', Category::class);
-        // $categories = Category::all();
         $categories = Category::whereNull('parent_category_id')->get();
-        $id = null;
-        $allQuantityCategory = Category::query()->count();
-        $quantityCategory = $categories->count();
 
-        return view('category.index', compact('categories', 'id', 'allQuantityCategory', 'quantityCategory' ));
+        return view('category.index', $this->getCategoryData($categories));
     }
 
     public function create()
@@ -97,9 +100,9 @@ class CategoryController extends Controller
     public function update(CreateCategoryRequest $request, Category $category)
     {
         $this->authorize('update', $category);
+        $data = $request->validated();
 
         try {
-            $data = $request->validated();
             $this->categoryService->update($data, $category);
         } catch (UpdateCategoryException $e) {
             // TODO!!! implement in this way -> return redirect()->back()->withErrors(['error' => $e->getMessage()]);
@@ -124,5 +127,13 @@ class CategoryController extends Controller
         }
 
         return redirect()->route('categories.index');
+    }
+
+    public function search(SearchRequest $request)
+    {
+        $search = $request->get('search');
+        $categories = Category::where('name', 'like', '%' . $search . '%')->get();
+
+        return view('category.index', $this->getCategoryData($categories));
     }
 }

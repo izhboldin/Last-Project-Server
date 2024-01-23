@@ -5,4 +5,5 @@
    <p><span>Количество Продуктов: </span>{{$quantityProduct}}</p>
    <p><span>Количество Категорий: </span>{{$quantityCategory}}</p>
 </div>
+<span class="material-symbols-outlined">add</span>
 @endsection

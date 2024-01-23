@@ -6,12 +6,12 @@
             @method('patch')
             <input type="hidden" name="id" value="{{ $category->id }}">
             <div class="form-group mb-2">
-                <label for="parent_category_id">parent_category_id</label>
+                <label for="parent_category_id">parent_category_name</label>
                 <select class="form-select" id="parent_category_id" name="parent_category_id">
                     <option value="" {{ $category->parent_category_id ? '' : 'selected' }}>No parent</option>
                     @foreach ($categories->where('id', '!=', $category->id) as $item)
                         <option {{ $category->parent_category_id === $item->id ? 'selected' : '' }}
-                            value="{{ $item->id }}">{{ $item->id }}</option>
+                            value="{{ $item->id }}">{{ $item->name }}</option>
                     @endforeach
                 </select>
             </div>

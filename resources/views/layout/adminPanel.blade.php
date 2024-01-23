@@ -16,6 +16,10 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
         * {
             font-family: 'Cabin', sans-serif;
@@ -59,7 +63,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active d-flex align-items-center justify-content-center" href="{{ route('categories.index') }}">
+                            <a class="nav-link active d-flex align-items-center justify-content-center"
+                                href="{{ route('categories.index') }}">
                                 <span class="material-symbols-outlined">category</span>
                                 <span>CATEGORIES</span>
                             </a>

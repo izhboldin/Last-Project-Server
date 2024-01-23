@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 
 class CategoryService
 {
+
     public function create($data)
     {
         Category::create($data);
