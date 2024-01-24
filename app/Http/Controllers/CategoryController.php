@@ -53,6 +53,7 @@ class CategoryController extends Controller
     public function index()
     {
         $this->authorize('read', Category::class);
+        // здесь применять все фильтра и сортировки (создать метод search в сервисе)
         $categories = Category::whereNull('parent_category_id')->get();
 
         return view('category.index', $this->getCategoryData($categories));

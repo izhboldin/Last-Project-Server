@@ -7,23 +7,28 @@ use App\Models\User;
 
 class CategoryPolicy
 {
-    public function read(User $user)
+    private function verificationUser($user)
     {
         return in_array($user->role, ['moderator', 'admin']);
+    }
+
+    public function read(User $user)
+    {
+        return $this->verificationUser($user);
     }
 
     public function create(User $user)
     {
-        return in_array($user->role, ['moderator', 'admin']);
+        return $this->verificationUser($user);
     }
 
     public function update(User $user, Category $category)
     {
-        return in_array($user->role, ['moderator', 'admin']);
+        return $this->verificationUser($user);
     }
 
     public function delete(User $user, Category $category)
     {
-        return in_array($user->role, ['moderator', 'admin']);
+        return $this->verificationUser($user);
     }
 }

@@ -5,7 +5,6 @@
         method="POST">
         @csrf
         @method('patch')
-        {{$parameter}}
         <div class="form-group">
             <label for="name">Название:</label>
             <input type="text" class="form-control" id="name" name="name" value="{{$parameter->name}}" required>

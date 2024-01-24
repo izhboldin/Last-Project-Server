@@ -10,7 +10,8 @@ Route::middleware('auth')
         // Route::get('/',[OptionController::class, 'index'])->name('options.index');
         Route::get('/{parameter}',[OptionController::class, 'index'])->name('options.index');
         Route::post('/{parameter}',[OptionController::class, 'create'])->name('options.create');
-        // Route::get('/{category}/edit',[OptionController::class, 'edit'])->name('options.edit');
-        // Route::patch('/{category}',[OptionController::class, 'update'])->name('options.update');
-        // Route::delete('/{category}',[OptionController::class, 'delete'])->name('options.delete');
+        Route::get('/{option}/edit/{parameter}',[OptionController::class, 'edit'])->name('options.edit');
+        Route::patch('/{option}/{parameter}',[OptionController::class, 'update'])->name('options.update');
+        Route::get('/{parameter}/back',[OptionController::class, 'back'])->name('options.back');
+        // Route::delete('/{option}',[OptionController::class, 'delete'])->name('options.delete');
     });
