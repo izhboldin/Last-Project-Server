@@ -22,4 +22,9 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'product_options', 'product_id', 'option_id');
+    }
 }

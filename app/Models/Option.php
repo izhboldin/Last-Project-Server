@@ -15,6 +15,6 @@ class Option extends Model
 
     public function parameter()
     {
-        return $this->belongsTo(Parameter::class);
+        return $this->belongsTo(Parameter::class, 'parameter_id');
     }
 }

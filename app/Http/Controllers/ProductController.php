@@ -35,9 +35,12 @@ class ProductController extends Controller
     {
         $this->authorize('read', Product::class);
 
-        $products = Product::all();
+        // $products = Product::all();
+        $products = Product::with('options.parameter')->find(15);
 
-        return ProductResource::collection($products);
+        return $products->options;
+        // return ProductResource::collection($products);
+
     }
 
     public function get(Product $product)
