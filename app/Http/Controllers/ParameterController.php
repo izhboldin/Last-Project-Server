@@ -12,9 +12,6 @@ use Illuminate\Http\JsonResponse;
 
 class ParameterController extends Controller
 {
-
-
-
     private $parameterService;
 
     public function __construct(ParameterService $parameterService)
@@ -36,13 +33,13 @@ class ParameterController extends Controller
         return view('parameter.edit', compact('parameter', 'category_id'));
     }
 
-    public function back(string $category_id){
-
+    public function back(string $category_id)
+    {
         $category = Category::where('id', '=', $category_id)->get();
 
-        if($category['0']['parent_category_id'] == null){
+        if ($category['0']['parent_category_id'] == null) {
             return redirect()->route('categories.index');
-        }else{
+        } else {
             return redirect()->route('categories.more', $category['0']['parent_category_id']);
         }
     }
@@ -66,16 +63,21 @@ class ParameterController extends Controller
     public function update(ParameterRequest $request, Parameter $parameter, string $id)
     {
         $data = $request->validated();
-        $parameter->update($data);
+
+        try {
+            $this->parameterService->update($data, $parameter);
+        } catch (CreateParameterException $e) {
+            return new JsonResponse(
+                ['message' => $e->getMessage(),],
+                400
+            );
+        }
 
         return redirect()->route('parameters.show', $id);
-
     }
 
     public function delete(Parameter $parameter, string $id)
     {
-
-
         try {
             $this->parameterService->delete($parameter);
         } catch (CreateParameterException $e) {

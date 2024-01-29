@@ -24,7 +24,7 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_category_id');
+        return $this->hasMany(Category::class, 'parent_category_id')->with('children');
     }
 
     public function parameters()
@@ -32,4 +32,16 @@ class Category extends Model
         return $this->hasMany(Parameter::class);
     }
 
+    public function getParentCategories($parentCategories = [])
+    {
+        $parentCategory = $this;
+
+        while ($parentCategory->parent_category_id) {
+            $parentCategory = Category::with('parameters.options')->find($parentCategory->parent_category_id);
+            $parentCategories[] = $parentCategory;
+        }
+
+        // Возвращаем массив родительских категорий
+        return $parentCategories;
+    }
 }

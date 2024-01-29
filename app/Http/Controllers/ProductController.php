@@ -30,9 +30,10 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-
     public function index()
     {
+
+
         $this->authorize('read', Product::class);
 
         // $products = Product::all();
@@ -45,9 +46,13 @@ class ProductController extends Controller
 
     public function get(Product $product)
     {
-        $this->authorize('read', Product::class);
+        $optionId = 21;
+        $product->options()->attach($optionId);
+        return 'peremoga';
 
-        return new ProductResource($product);
+        // $this->authorize('read', Product::class);
+
+        // return new ProductResource($product);
     }
 
     public function create(CreateProductRequest $request)

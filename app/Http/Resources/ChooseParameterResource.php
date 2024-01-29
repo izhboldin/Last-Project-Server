@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryApiResource extends JsonResource
+class ChooseParameterResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,9 @@ class CategoryApiResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'parent_category_id' => $this->parent_category_id,
             'name' => $this->name,
+            'type' => $this->type,
+            'options' => ChooseOptionResource::collection($this->options),
         ];
     }
 }

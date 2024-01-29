@@ -16,6 +16,11 @@ class ParameterService
         Parameter::create($data);
     }
 
+    public function update($data, Parameter $parameter)
+    {
+        $parameter->update($data);
+    }
+
     public function delete(Parameter $parameter)
     {
         $parameter->delete();

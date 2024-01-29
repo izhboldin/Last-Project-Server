@@ -19,9 +19,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/product1', [ProductController::class, 'store']);
 Route::prefix('categories')
     ->group(function () {
-        Route::get('/get', [CategoryApiController::class, 'getIndex'])->name('api_category_get_parent');
-        Route::get('/{category}', [CategoryApiController::class, 'get'])->name('api_category_get');
-        Route::get('/back/{parentCategory}', [CategoryApiController::class, 'back']);
+        Route::get('/', [CategoryApiController::class, 'index']);
+        Route::get('/{category}', [CategoryApiController::class, 'get']);
         // Route::post('/', [CategoryApiController::class, 'create']);
         // Route::post('/{product}', [CategoryApiController::class, 'update']);
         // Route::delete('/{product}', [CategoryApiController::class, 'delete']);

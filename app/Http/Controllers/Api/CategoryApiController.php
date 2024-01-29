@@ -2,34 +2,50 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\CategoryApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryApiResource;
+use App\Http\Requests\FilterCategoryRequest;
+use App\Http\Resources\ChooseCategoryResource;
+use App\Http\Resources\GetAllCategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Services\CategoryApiService;
+use Illuminate\Http\JsonResponse;
 
 class CategoryApiController extends Controller
 {
-    public function getIndex()
+
+    private $categoryApiService;
+
+    public function __construct(CategoryApiService $categoryApiService)
     {
-        $categories = Category::whereNull('parent_category_id')->get();
-        return $categories;
+        $this->categoryApiService = $categoryApiService;
+    }
+
+    public function index()
+    {
+        try {
+            $categories = $this->categoryApiService->index();
+        } catch (CategoryApiException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+
+        return GetAllCategoryResource::collection($categories);
     }
 
     public function get(string $id)
     {
-        $categories = Category::where('parent_category_id', '=', $id)->with('parameters.options')->get();
 
-        return $categories;
-    }
-
-    public function back(string $parentId)
-    {
-        $category = Category::where('id', $parentId)->first();
-        if ($category) {
-            $newParentCategoryId = $category['parent_category_id'];
-            return $newParentCategoryId;
-        } else {
-            return redirect()->route('fallback_route');
+        try {
+            $category = $this->categoryApiService->get($id);
+        } catch (CategoryApiException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], 400);
         }
+
+
+        return new ChooseCategoryResource($category);
     }
 }
