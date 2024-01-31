@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProductRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,11 +14,8 @@ class CreateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'price' => ['required', 'numeric'],
-            'category_id' => ['required', 'integer'],
-            'options' => ['required', 'array']
+            'id' => ['required', 'integer'],
+            'role' => ['required', 'string'],
         ];
     }
 }

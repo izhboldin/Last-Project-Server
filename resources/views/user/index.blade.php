@@ -1,6 +1,20 @@
 @extends('layout.adminPanel')
 @section('content')
+
     <div class="container mt-5">
+        <div class="my-3">
+            <form action="{{ route('user.search') }}" method="post">
+                @csrf
+                <div class="row ms-5">
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="search" placeholder="Введите текст">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary">Нажмите</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         {{-- <a href="{{ route('categories.create') }}" class="btn btn-primary mb-1">Создать</a> --}}
         <table class="table table-bordered">
             <thead>
@@ -23,7 +37,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->email_verified_at }}</td>
-                        <td>{{ $user->role}}</td>
+                        <td> <a href="{{route('user.edit', $user->id)}}" class="btn border me-1 p-0  material-symbols-outlined">edit</a>{{ $user->role}}</td>
                         <td>{{ $user->updated_at }}</td>
                         <td>{{ $user->created_at }}</td>
                         <td>

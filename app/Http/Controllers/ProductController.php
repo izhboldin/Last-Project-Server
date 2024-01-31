@@ -46,8 +46,9 @@ class ProductController extends Controller
 
     public function get(Product $product)
     {
-        $optionId = 21;
-        $product->options()->attach($optionId);
+        $optionArrId = [21, 20];
+        $product->options()->sync($optionArrId);
+        // $product->options()->sync($optionArrId);
         return 'peremoga';
 
         // $this->authorize('read', Product::class);
@@ -68,10 +69,13 @@ class ProductController extends Controller
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),
-                ],400);
+                ],
+                400
+            );
         }
 
-        return new ProductResource($product);
+        return $product;
+        // return new ProductResource($product);
     }
 
     public function update(CreateProductRequest $request, Product $product)
@@ -85,7 +89,9 @@ class ProductController extends Controller
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),
-                ],400);
+                ],
+                400
+            );
         }
 
         return new ProductResource($product);
@@ -101,7 +107,9 @@ class ProductController extends Controller
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),
-                ],400);
+                ],
+                400
+            );
         }
 
         return new ProductResource($product);

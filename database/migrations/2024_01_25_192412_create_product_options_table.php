@@ -18,8 +18,8 @@ return new class extends Migration
             $table->index('product_id', 'product_option_product_idx');
             $table->index('option_id', 'product_option_option_idx');
 
-            $table->foreign('product_id', 'product_option_product_fk')->on('products')->references('id');
-            $table->foreign('option_id', 'product_option_option_fk')->on('options')->references('id');
+            $table->foreign('product_id', 'product_option_product_fk')->on('products')->references('id')->onDelete('cascade');
+            $table->foreign('option_id', 'product_option_option_fk')->on('options')->references('id')->onDelete('cascade');
         });
     }
 

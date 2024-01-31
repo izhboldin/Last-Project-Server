@@ -26,7 +26,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::resource('admin-panel', AdminPanelController::class);
 
 Route::middleware('auth')
-    ->get('user', [UserController::class, 'index'])->name('user.index');
+->prefix('users')
+->group(function(){
+    Route::get('/', [UserController::class, 'index'])->name('user.index');
+    Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::post('/search', [UserController::class, 'search'])->name('user.search');
+});
 
 
 Route::get('/example', [ExampleController::class, 'index']);
