@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Api\ProductApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')
     ->prefix('products')
     ->group(function() {
-        Route::get('/', [ProductController::class, 'index']);
-        Route::get('/{product}', [ProductController::class, 'get']);
-        Route::post('/', [ProductController::class, 'create']);
-        Route::post('/{product}', [ProductController::class, 'update']);
-        Route::delete('/{product}', [ProductController::class, 'delete']);
+        Route::get('/', [ProductApiController::class, 'index'])->name('products.api.index');
+        Route::get('/{product}', [ProductApiController::class, 'get'])->name('products.api.get');
+        Route::post('/', [ProductApiController::class, 'create'])->name('products.api.create');
+        Route::post('/{product}', [ProductApiController::class, 'update'])->name('products.api.update');
+        Route::delete('/{product}', [ProductApiController::class, 'delete'])->name('products.api.delete');
     });
 // Route::middleware('auth')
 //     ->resource('product', ProductController::class);

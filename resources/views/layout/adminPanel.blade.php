@@ -72,6 +72,13 @@
                                 <span>CATEGORIES</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active d-flex align-items-center justify-content-center"
+                                href="{{ route('products.index') }}">
+                                <span class="material-symbols-outlined">category</span>
+                                <span>PRODUCTS</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>

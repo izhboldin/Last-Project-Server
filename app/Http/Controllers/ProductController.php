@@ -2,18 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\CreateProductException;
-use App\Exceptions\DeleteProductException;
-use App\Exceptions\UpdateProductException;
-use App\Http\Requests\CreateProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Models\Category;
 use App\Models\Product;
-use App\Policies\CategoryPolicy;
-use App\Policies\ProductPolicy;
 use App\Services\ProductService;
-use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -30,88 +20,26 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-
-
         $this->authorize('read', Product::class);
 
-        // $products = Product::all();
-        $products = Product::with('options.parameter')->find(15);
+        $products = Product::with('options.parameter');
+        $str = $request->get('str');
 
-        return $products->options;
-        // return ProductResource::collection($products);
-
-    }
-
-    public function get(Product $product)
-    {
-        $optionArrId = [21, 20];
-        $product->options()->sync($optionArrId);
-        // $product->options()->sync($optionArrId);
-        return 'peremoga';
-
-        // $this->authorize('read', Product::class);
-
-        // return new ProductResource($product);
-    }
-
-    public function create(CreateProductRequest $request)
-    {
-        $this->authorize('create', Product::class);
-
-        $data = $request->validated();
-        $user = $request->user();
-
-        try {
-            $product = $this->productService->create($user, $data);
-        } catch (CreateProductException $e) {
-            return new JsonResponse(
-                [
-                    'message' => $e->getMessage(),
-                ],
-                400
-            );
+        if ($str !== null) {
+            $products->searchByStatus($str);
         }
+        $products = $products->get();
 
-        return $product;
-        // return new ProductResource($product);
+        return view('product.index', compact('products'));
     }
 
-    public function update(CreateProductRequest $request, Product $product)
+    public function edit(Request $request, Product $product)
     {
-        $this->authorize('update', Product::class);
-
-        $data = $request->validated();
-        try {
-            $this->productService->update($product, $data);
-        } catch (UpdateProductException $e) {
-            return new JsonResponse(
-                [
-                    'message' => $e->getMessage(),
-                ],
-                400
-            );
-        }
-
-        return new ProductResource($product);
-    }
-
-    public function delete(Product $product)
-    {
-        $this->authorize('delete', Product::class);
-
-        try {
-            $this->productService->delete($product);
-        } catch (DeleteProductException $e) {
-            return new JsonResponse(
-                [
-                    'message' => $e->getMessage(),
-                ],
-                400
-            );
-        }
-
-        return new ProductResource($product);
+        $status =['status' =>  $request->get('status'),];
+        // dd($status);
+        $product->update($status);
+        return redirect()->route('products.index');
     }
 }

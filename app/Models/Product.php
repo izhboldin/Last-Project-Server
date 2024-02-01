@@ -27,4 +27,8 @@ class Product extends Model
     {
         return $this->belongsToMany(Option::class, 'product_options', 'product_id', 'option_id');
     }
+
+    public function scopeSearchByStatus($query, $str){
+        $query->where('status', '=', $str);
+    }
 }
