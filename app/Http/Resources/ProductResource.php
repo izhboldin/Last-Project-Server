@@ -18,12 +18,12 @@ class ProductResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
-            'category_id' => $this->category_id,
-            'user_id' => $this->user_id,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
+            'options' => $this->options,
             'user' => new UserResource($this->user),
             'category' => new CategoryResource($this->category),
+
         ];
     }
 }

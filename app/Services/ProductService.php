@@ -16,29 +16,20 @@ class ProductService
 {
     public function create(User $user, $data)
     {
-        // $productData = $this->makeProductData($data);
+        $productData = $this->makeProductData($data);
         $category = Category::findOrFail($data['category_id']);
         $options = $this->makeOptions($data);
-        // return $data;
 
         if ($category->children()->exists()) {
             throw new CreateProductException('You cannot associate parent category!');
         }
 
-        $product = DB::transaction(function () use ($user, $data, $category, $options) {
-            $product = new Product($data);
+        $product = DB::transaction(function () use ($user, $productData, $category, $options) {
+            $product = new Product($productData);
             $product->user()->associate($user);
             $product->category()->associate($category);
             $product->save();
             $product->options()->sync($options);
-
-            //TODO in update the same condition BUT!
-            // if (isset($data['options'])) {
-            //   $product->options()->sync($options);
-            //}
-            //
-
-
             return $product;
         });
 
@@ -49,7 +40,16 @@ class ProductService
 
     public function  update(Product $product, $data)
     {
-        $product->update($data);
+        $productData = $this->makeProductData($data);
+        $options = $this->makeOptions($data);
+        DB::transaction(function () use ($data, $productData, $options, $product) {
+            $product->update($productData);
+
+            if (isset($data['options'])) {
+              $product->options()->sync($options);
+            }
+        });
+
         event(new ProductWasUpdated($product));
     }
 

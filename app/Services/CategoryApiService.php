@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\ListCategoryException;
 use App\Models\Category;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class CategoryApiService
@@ -20,7 +21,7 @@ class CategoryApiService
 
         $parentCategories = $category->getParentCategories();
 
-        $category = Category::where('id', '=', $id)->with('parameters.options')->first();
+        $category = Category::where('id', '=', $id)->with('parameters.options', 'children')->first();
 
         foreach ($parentCategories as $item) {
             foreach ($item->parameters as $parameter) {

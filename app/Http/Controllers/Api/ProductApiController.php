@@ -17,6 +17,8 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+use function Laravel\Prompts\search;
+
 class ProductApiController extends Controller
 {
     /**
@@ -35,29 +37,56 @@ class ProductApiController extends Controller
     {
         $this->authorize('read', Product::class);
 
-        $products = Product::with('options.parameter');
+
+        $user = $request->user();
+        $products = Product::with('options.parameter', 'category');
         $str = $request->get('str');
+        $categoryId = $request->get('categoryId');
+        $search = $request->get('search');
+        $options = $request->get('options');
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
+
 
         if ($str !== null) {
-            $products->searchByStatus($str);
+            $products->where('user_id', '=', $user->id)->searchByStatus($str);
         }
+        if ($categoryId !== null) {
+            $products->where('category_id', '=', $categoryId);
+        }
+        if ($search !== null) {
+            $products->where('title', 'like', '%' . $search . '%');
+            $products->orderBy('title', 'asc');
+        }
+        if ($options !== null) {
+            $products = Product::whereHas('options', function ($query) use ($options) {
+                $query->whereIn('id', $options);
+            });
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $products->whereBetween('price', [$minPrice, $maxPrice]);
+        } elseif ($minPrice !== null) {
+            $products->where('price', '>', $minPrice);
+        } elseif ($maxPrice !== null) {
+            $products->where('price', '<', $maxPrice);
+        }
+
         $products = $products->get();
 
-        return $products;
-        // return ProductResource::collection($products);
 
+        return $products;
     }
 
-    public function get(Product $product)
+    public function get(string $id)
     {
-        $optionArrId = [21, 20];
-        $product->options()->sync($optionArrId);
-        // $product->options()->sync($optionArrId);
-        return 'peremoga';
+        $this->authorize('read', Product::class);
 
-        // $this->authorize('read', Product::class);
+        $product = Product::with('options.parameter', 'category', 'user')->find($id);
 
-        // return new ProductResource($product);
+        // return $product;
+
+        return new ProductResource($product);
     }
 
     public function create(CreateProductRequest $request)
@@ -66,7 +95,6 @@ class ProductApiController extends Controller
 
         $data = $request->validated();
         $user = $request->user();
-
         try {
             $product = $this->productService->create($user, $data);
         } catch (CreateProductException $e) {

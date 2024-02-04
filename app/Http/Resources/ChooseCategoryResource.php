@@ -19,6 +19,7 @@ class ChooseCategoryResource extends JsonResource
             // 'parent_category_id' => $this->parent_category_id,
             'name' => $this->name,
             'parameters' => ChooseParameterResource::collection($this->parameters),
+            'children' =>  GetAllCategoryResource::collection($this->children),
         ];
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Resources\GetAllCategoryResource;
 use App\Models\Category;
 use App\Services\CategoryApiService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategoryApiController extends Controller
 {
@@ -30,6 +31,8 @@ class CategoryApiController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
+        // return $request->get('categoryId');
+        return $categories;
 
         return GetAllCategoryResource::collection($categories);
     }

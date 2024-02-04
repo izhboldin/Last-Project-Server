@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +15,10 @@ class UserRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer'],
-            'name' => ['required', 'string'],
-            'role' => ['required', 'string'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'price' => ['required', 'integer'],
+            'status' => ['required', 'string'],
         ];
     }
 }

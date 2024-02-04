@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -35,11 +36,23 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
-    public function edit(Request $request, Product $product)
+    public function edit(Product $product)
     {
-        $status =['status' =>  $request->get('status'),];
-        // dd($status);
+        return view('product.edit', compact('product'));
+    }
+
+    public function editStatus(Request $request, Product $product)
+    {
+        $status = ['status' =>  $request->get('status'),];
         $product->update($status);
+
+        return redirect()->route('products.index');
+    }
+
+    public function update(ProductRequest $request, Product $product){
+        $data = $request->validated();
+        $product->update($data);
+
         return redirect()->route('products.index');
     }
 }

@@ -22,6 +22,8 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
     <style>
         * {
@@ -75,7 +77,7 @@
                         <li class="nav-item">
                             <a class="nav-link active d-flex align-items-center justify-content-center"
                                 href="{{ route('products.index') }}">
-                                <span class="material-symbols-outlined">category</span>
+                                <span class="material-symbols-outlined">inventory_2</span>
                                 <span>PRODUCTS</span>
                             </a>
                         </li>
