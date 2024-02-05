@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Exceptions\CreateProductException;
 use App\Exceptions\DeleteProductException;
+use App\Exceptions\IndexProductException;
 use App\Exceptions\UpdateProductException;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -16,6 +17,7 @@ use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use function Laravel\Prompts\search;
 
@@ -37,43 +39,16 @@ class ProductApiController extends Controller
     {
         $this->authorize('read', Product::class);
 
-
-        $user = $request->user();
-        $products = Product::with('options.parameter', 'category');
-        $str = $request->get('str');
-        $categoryId = $request->get('categoryId');
-        $search = $request->get('search');
-        $options = $request->get('options');
-        $minPrice = $request->get('minPrice');
-        $maxPrice = $request->get('maxPrice');
-
-
-        if ($str !== null) {
-            $products->where('user_id', '=', $user->id)->searchByStatus($str);
+        try {
+            $products = $this->productService->index($request);
+        } catch (IndexProductException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                ],
+                400
+            );
         }
-        if ($categoryId !== null) {
-            $products->where('category_id', '=', $categoryId);
-        }
-        if ($search !== null) {
-            $products->where('title', 'like', '%' . $search . '%');
-            $products->orderBy('title', 'asc');
-        }
-        if ($options !== null) {
-            $products = Product::whereHas('options', function ($query) use ($options) {
-                $query->whereIn('id', $options);
-            });
-        }
-
-        if ($minPrice !== null && $maxPrice !== null) {
-            $products->whereBetween('price', [$minPrice, $maxPrice]);
-        } elseif ($minPrice !== null) {
-            $products->where('price', '>', $minPrice);
-        } elseif ($maxPrice !== null) {
-            $products->where('price', '<', $maxPrice);
-        }
-
-        $products = $products->get();
-
 
         return $products;
     }

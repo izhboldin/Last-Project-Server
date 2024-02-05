@@ -28,7 +28,47 @@ class Product extends Model
         return $this->belongsToMany(Option::class, 'product_options', 'product_id', 'option_id');
     }
 
-    public function scopeSearchByStatus($query, $str){
+    public function scopeSearchByStatus($query, $str)
+    {
         $query->where('status', '=', $str);
+    }
+
+    public function scopeFilterByCategory($query, $categoryId)
+    {
+        $query->where('category_id', '=', $categoryId);
+    }
+
+    public function scopeFilterByTitle($query, $search)
+    {
+        $query->where('title', 'like', '%' . $search . '%');
+        $query->orderBy('title', 'asc');
+    }
+
+    public function scopeFilterByOptions($queries, $options)
+    {
+        $queries->whereHas('options', function ($query) use ($options) {
+            $query->whereIn('id', $options);
+        });
+    }
+
+    public function scopeFilterByPrice($query, $minPrice, $maxPrice)
+    {
+        if ($minPrice !== null && $maxPrice !== null) {
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        } elseif ($minPrice !== null) {
+            $query->where('price', '>', $minPrice);
+        } elseif ($maxPrice !== null) {
+            $query->where('price', '<', $maxPrice);
+        }
+    }
+
+    public function scopeSortByDate($query, $date)
+    {
+        $query->orderBy('created_at', $date);
+    }
+
+    public function scopeSortByPrice($query, $price)
+    {
+        $query->orderBy('price', $price);
     }
 }

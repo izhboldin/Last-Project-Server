@@ -9,11 +9,58 @@ use App\Exceptions\CreateProductException;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
+
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $products = Product::with('options.parameter', 'category');
+
+        $str = $request->get('str');
+
+        $categoryId = $request->get('categoryId');
+        $search = $request->get('search');
+        $options = $request->get('options');
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
+
+        $date = $request->get('date');
+        $price = $request->get('price');
+
+
+        if ($str !== null) {
+            $products->where('user_id', '=', $user->id)->searchByStatus($str);
+        }
+        if ($categoryId !== null) {
+            $products->filterByCategory($categoryId);
+        }
+        if ($search !== null) {
+            $products->filterByTitle($search);
+        }
+        if ($options !== null) {
+            !(is_array($options)) ? $options = json_decode("[" . $options . "]") : '';
+
+            $products->filterByOptions($options);
+        }
+
+        if ($minPrice !== null || $maxPrice !== null) {
+            $products->filterByPrice($minPrice, $maxPrice);
+        }
+
+        if ($date !== null) {
+            $products->sortByDate($date);
+        }
+        if ($price !== null) {
+            $products->sortByPrice($price);
+        }
+
+        return  $products->get();
+    }
     public function create(User $user, $data)
     {
         $productData = $this->makeProductData($data);
@@ -46,7 +93,7 @@ class ProductService
             $product->update($productData);
 
             if (isset($data['options'])) {
-              $product->options()->sync($options);
+                $product->options()->sync($options);
             }
         });
 
