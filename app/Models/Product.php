@@ -47,7 +47,12 @@ class Product extends Model
     public function scopeFilterByOptions($queries, $options)
     {
         $queries->whereHas('options', function ($query) use ($options) {
-            $query->whereIn('id', $options);
+            $query->whereIn('id', function ($subQuery) use ($options) {
+                $subQuery->select('id')
+                    ->from('options')
+                    ->whereIn('category_id', array_column($options, 'category_id'))
+                    ->groupBy('category_id');
+            });
         });
     }
 

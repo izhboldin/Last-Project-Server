@@ -16,11 +16,16 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
     {
-        $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'phone' => $request->get('phone'),
+                'password' => Hash::make($request->get('password')),
+            ]);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
 
         $token = $user->createToken('Token Name')->plainTextToken;
 

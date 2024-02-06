@@ -15,16 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Route::get('/product', [ProductController::class, 'index']);
-// Route::get('/product1', [ProductController::class, 'store']);
-Route::middleware('auth:sanctum')
+Route::prefix('products')
+    ->group(function () {
+    Route::get('/', [ProductApiController::class, 'index'])->name('products.api.index');
+    Route::get('/{product}', [ProductApiController::class, 'get'])->name('products.api.get');
+    });
+
+
+    Route::middleware('auth:sanctum')
     ->prefix('products')
-    ->group(function() {
-        Route::get('/', [ProductApiController::class, 'index'])->name('products.api.index');
-        Route::get('/{product}', [ProductApiController::class, 'get'])->name('products.api.get');
+    ->group(function () {
         Route::post('/', [ProductApiController::class, 'create'])->name('products.api.create');
         Route::post('/{product}', [ProductApiController::class, 'update'])->name('products.api.update');
         Route::delete('/{product}', [ProductApiController::class, 'delete'])->name('products.api.delete');
     });
-// Route::middleware('auth')
-//     ->resource('product', ProductController::class);
+

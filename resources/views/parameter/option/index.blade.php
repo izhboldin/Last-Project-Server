@@ -27,7 +27,7 @@
                             <a href="{{ route('categories.edit', $users->id) }}" type="button"
                                 class="btn btn-success">edit</a> --}}
                         <a href="{{ route('options.edit', ['option' => $option->id, 'parameter' => $id]) }}" type="button" class="btn btn-success">edit</a>
-                        <form class="d-inline" action="{{ route('parameters.delete', ['parameter' => $option->id, 'category' => $id]) }}"
+                        <form class="d-inline" action="{{ route('options.delete', ['option' => $option->id, 'parameter' => $id]) }}"
                             method="POST">
                             @csrf
                             @method('delete')

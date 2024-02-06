@@ -19,6 +19,7 @@ class CreateProductRequest extends FormRequest
             'price' => ['required', 'numeric'],
             'category_id' => ['required', 'integer'],
             'options' => ['required', 'array'],
+            'state' => ['required', 'string'],
             'status' => ['required', 'string'],
         ];
     }

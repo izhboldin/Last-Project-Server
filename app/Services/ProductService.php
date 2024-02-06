@@ -28,19 +28,25 @@ class ProductService
         $options = $request->get('options');
         $minPrice = $request->get('minPrice');
         $maxPrice = $request->get('maxPrice');
+        $state = $request->get('state');
 
         $date = $request->get('date');
         $price = $request->get('price');
 
 
         if ($str !== null) {
-            $products->where('user_id', '=', $user->id)->searchByStatus($str);
+            $products->where('user_id', $user->id)->searchByStatus($str);
         }
         if ($categoryId !== null) {
-            $products->filterByCategory($categoryId);
+            $category = Category::find($categoryId);
+            $products->whereIn('category_id', $category->getAllDescendantsProducts()->pluck('id'));
+            // $products->filterByCategory($categoryId);
         }
         if ($search !== null) {
             $products->filterByTitle($search);
+        }
+        if ($state !== null) {
+            $products->where('state', '=', $state);
         }
         if ($options !== null) {
             !(is_array($options)) ? $options = json_decode("[" . $options . "]") : '';
@@ -61,6 +67,7 @@ class ProductService
 
         return  $products->get();
     }
+
     public function create(User $user, $data)
     {
         $productData = $this->makeProductData($data);

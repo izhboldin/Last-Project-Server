@@ -50,4 +50,10 @@ class OptionController extends Controller
 
         return redirect()->route('options.index', $id);
     }
+
+    public function delete(Option $option, string $id) {
+        $option->delete();
+
+        return redirect()->route('options.index', $id);
+    }
 }

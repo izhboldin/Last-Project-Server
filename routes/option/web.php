@@ -13,5 +13,5 @@ Route::middleware('auth')
         Route::get('/{option}/edit/{parameter}',[OptionController::class, 'edit'])->name('options.edit');
         Route::patch('/{option}/{parameter}',[OptionController::class, 'update'])->name('options.update');
         Route::get('/{parameter}/back',[OptionController::class, 'back'])->name('options.back');
-        // Route::delete('/{option}',[OptionController::class, 'delete'])->name('options.delete');
+        Route::delete('/{option}/{parameter}',[OptionController::class, 'delete'])->name('options.delete');
     });
