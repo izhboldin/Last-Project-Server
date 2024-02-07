@@ -16,12 +16,28 @@ use Illuminate\Support\Facades\DB;
 class ProductService
 {
 
+    public function getAllDescendantsIds($categoryId)
+    {
+        $category = Category::find($categoryId);
+        $descendantsIds = $this->getDescendantsIdsRecursive($category);
+        return $descendantsIds;
+    }
+
+    protected function getDescendantsIdsRecursive($category)
+    {
+        $ids = [$category->id];
+
+        foreach ($category->children as $child) {
+            $ids = array_merge($ids, $this->getDescendantsIdsRecursive($child));
+        }
+
+        return $ids;
+    }
+
     public function index(Request $request)
     {
-        $user = $request->user();
-        $products = Product::with('options.parameter', 'category');
+        $products = Product::with('options.parameter', 'category')->searchByStatus('active');
 
-        $str = $request->get('str');
 
         $categoryId = $request->get('categoryId');
         $search = $request->get('search');
@@ -33,13 +49,20 @@ class ProductService
         $date = $request->get('date');
         $price = $request->get('price');
 
+        $productService = new ProductService();
 
-        if ($str !== null) {
-            $products->where('user_id', $user->id)->searchByStatus($str);
+
+
+        if ($options !== null) {
+            !(is_array($options)) ? $options = json_decode("[" . $options . "]") : '';
+            // $products->whereHas('options', function ($query) use ($options) {
+            //     $query->whereIn('id', $options);
+            // });
+            $products->filterByOptions($options);
         }
         if ($categoryId !== null) {
-            $category = Category::find($categoryId);
-            $products->whereIn('category_id', $category->getAllDescendantsProducts()->pluck('id'));
+            $categoryIds = $productService->getAllDescendantsIds($categoryId);
+            $products->whereIn('category_id', $categoryIds);
             // $products->filterByCategory($categoryId);
         }
         if ($search !== null) {
@@ -47,11 +70,6 @@ class ProductService
         }
         if ($state !== null) {
             $products->where('state', '=', $state);
-        }
-        if ($options !== null) {
-            !(is_array($options)) ? $options = json_decode("[" . $options . "]") : '';
-
-            $products->filterByOptions($options);
         }
 
         if ($minPrice !== null || $maxPrice !== null) {
@@ -63,6 +81,21 @@ class ProductService
         }
         if ($price !== null) {
             $products->sortByPrice($price);
+        }
+
+        return  $products->paginate(4);
+    }
+
+
+    public function indexYourProduct(Request $request)
+    {
+        $products = Product::with('options.parameter', 'category');
+
+        $user = $request->user();
+        $str = $request->get('str');
+
+        if ($str !== null) {
+            $products->where('user_id', $user->id)->searchByStatus($str);
         }
 
         return  $products->get();

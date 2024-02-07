@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
-            $table->float('price');
+            // $table->float('price');s
+            $table->foreignId('price');
             $table->enum('status', ['active', 'wait', 'notActive', 'reject'])->default('wait');
             $table->enum('state', ['second-hand', 'new'])->default('new');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');

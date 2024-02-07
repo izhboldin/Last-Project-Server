@@ -23,7 +23,6 @@ class ProductResource extends JsonResource
             'options' => $this->options,
             'user' => new UserResource($this->user),
             'category' => new CategoryResource($this->category),
-
         ];
     }
 }

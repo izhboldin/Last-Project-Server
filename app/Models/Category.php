@@ -24,7 +24,7 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_category_id');
+        return $this->hasMany(Category::class, 'parent_category_id')->with('children');
     }
     public function childrenId()
     {
@@ -41,11 +41,11 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function getAllDescendantsProducts()
-    {
-        $descendants = $this->descendants()->pluck('id');
-        return Product::whereIn('category_id', $descendants)->orWhere('category_id', $this->id)->get();
-    }
+    // public function getAllDescendantsProducts()
+    // {
+    //     $descendants = $this->descendants()->pluck('id');
+    //     return Product::whereIn('category_id', $descendants)->orWhere('category_id', $this->id)->get();
+    // }
 
     public function getParentCategories($parentCategories = [])
     {

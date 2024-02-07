@@ -37,10 +37,26 @@ class ProductApiController extends Controller
 
     public function index(Request $request)
     {
-        // $this->authorize('read', Product::class);
 
         try {
             $products = $this->productService->index($request);
+        } catch (IndexProductException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                ],
+                400
+            );
+        }
+
+        return $products;
+    }
+
+    public function indexYourProduct (Request $request)
+    {
+        $this->authorize('read', Product::class);
+        try {
+            $products = $this->productService->indexYourProduct($request);
         } catch (Exception $e) {
             return $e->getMessage();
             return new JsonResponse(
@@ -59,8 +75,6 @@ class ProductApiController extends Controller
         // $this->authorize('read', Product::class);
 
         $product = Product::with('options.parameter', 'category', 'user')->find($id);
-
-        // return $product;
 
         return new ProductResource($product);
     }
