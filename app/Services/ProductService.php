@@ -36,7 +36,7 @@ class ProductService
 
     public function index(Request $request)
     {
-        $products = Product::with('options.parameter', 'category')->searchByStatus('active');
+        $products = Product::with('options.parameter', 'category');
 
 
         $categoryId = $request->get('categoryId');
@@ -49,21 +49,21 @@ class ProductService
         $date = $request->get('date');
         $price = $request->get('price');
 
-        $productService = new ProductService();
+        $userId = $request->get('userId');
+        $str = $request->get('str');
 
-
-
+        if ($str !== null && $userId !== null) {
+            $products->where('user_id', $userId)->searchByStatus($str);
+            return  $products->get();
+        }
         if ($options !== null) {
             !(is_array($options)) ? $options = json_decode("[" . $options . "]") : '';
-            // $products->whereHas('options', function ($query) use ($options) {
-            //     $query->whereIn('id', $options);
-            // });
+
             $products->filterByOptions($options);
         }
         if ($categoryId !== null) {
-            $categoryIds = $productService->getAllDescendantsIds($categoryId);
+            $categoryIds = $this->getAllDescendantsIds($categoryId);
             $products->whereIn('category_id', $categoryIds);
-            // $products->filterByCategory($categoryId);
         }
         if ($search !== null) {
             $products->filterByTitle($search);
@@ -83,22 +83,7 @@ class ProductService
             $products->sortByPrice($price);
         }
 
-        return  $products->paginate(4);
-    }
-
-
-    public function indexYourProduct(Request $request)
-    {
-        $products = Product::with('options.parameter', 'category');
-
-        $user = $request->user();
-        $str = $request->get('str');
-
-        if ($str !== null) {
-            $products->where('user_id', $user->id)->searchByStatus($str);
-        }
-
-        return  $products->get();
+        return  $products->searchByStatus('active')->paginate(4);
     }
 
     public function create(User $user, $data)

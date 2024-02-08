@@ -21,9 +21,8 @@ Route::middleware('auth:sanctum')
     ->prefix('products')
     ->group(function () {
         // Route::get('/get', [ProductApiController::class, 'qwe']);
-        Route::get('/getYourProduct', [ProductApiController::class, 'indexYourProduct']);
         Route::post('/', [ProductApiController::class, 'create'])->name('products.api.create');
-        Route::post('/{product}', [ProductApiController::class, 'update'])->name('products.api.update');
+        Route::put('/{product}', [ProductApiController::class, 'update'])->name('products.api.update');
         Route::delete('/{product}', [ProductApiController::class, 'delete'])->name('products.api.delete');
     });
 

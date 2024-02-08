@@ -8,6 +8,7 @@ use App\Exceptions\DeleteProductException;
 use App\Exceptions\IndexProductException;
 use App\Exceptions\UpdateProductException;
 use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
@@ -52,24 +53,6 @@ class ProductApiController extends Controller
         return $products;
     }
 
-    public function indexYourProduct (Request $request)
-    {
-        $this->authorize('read', Product::class);
-        try {
-            $products = $this->productService->indexYourProduct($request);
-        } catch (Exception $e) {
-            return $e->getMessage();
-            return new JsonResponse(
-                [
-                    'message' => $e->getMessage(),
-                ],
-                400
-            );
-        }
-
-        return $products;
-    }
-
     public function get(string $id)
     {
         // $this->authorize('read', Product::class);
@@ -100,9 +83,10 @@ class ProductApiController extends Controller
         // return new ProductResource($product);
     }
 
-    public function update(CreateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $this->authorize('update', Product::class);
+        $this->authorize('update', $product);
+        // return $request;
 
         $data = $request->validated();
         try {
@@ -115,13 +99,13 @@ class ProductApiController extends Controller
                 400
             );
         }
-
-        return new ProductResource($product);
+        return $product;
+        // return new ProductResource($product);
     }
 
     public function delete(Product $product)
     {
-        $this->authorize('delete', Product::class);
+        $this->authorize('delete', $product);
 
         try {
             $this->productService->delete($product);

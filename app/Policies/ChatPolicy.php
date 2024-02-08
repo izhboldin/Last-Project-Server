@@ -17,12 +17,15 @@ class ChatPolicy
 
     public function getMessages(User $user, Chat $chat)
     {
-        return true;
+        return $user->id === $chat->buyer_id || $user->id === $chat->seller_id;
     }
 
-    public function create(User $user)
+
+
+    public function create(User $user, Chat $chat)
     {
-        return true;
+        return $user->id === $chat->buyer_id || $user->id === $chat->seller_id;
+
     }
 
     public function getOrCreate(User $user)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImageRequest;
 use App\Http\Requests\SearchRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,13 +43,5 @@ class UserController extends Controller
 
         return view('user.index', compact('users'));
     }
-
-    // private function getCategoryData($categories, $id = null)
-    // {
-    //     $allQuantityCategory = Category::count();
-    //     $quantityCategory = $categories->count();
-
-    //     return compact('categories', 'id', 'allQuantityCategory', 'quantityCategory');
-    // }
 
 }

@@ -20,6 +20,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::middleware('auth:sanctum')
+    ->group(function() {
+        Route::post('/images', [AuthController::class, 'uploadImage']);
+    });
+
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);

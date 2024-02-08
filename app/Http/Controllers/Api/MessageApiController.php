@@ -28,6 +28,7 @@ class MessageApiController extends Controller
 
     public function index(Chat $chat, Request $request)
     {
+        $this->authorize('getMessages', $chat);
         try {
             $messages = $this->messageService->index($chat, $request);
         } catch (IndexMessageException $e) {
@@ -44,6 +45,8 @@ class MessageApiController extends Controller
 
     public function create(Chat $chat, CreateMessageRequest $request,)
     {
+        $this->authorize('create', $chat);
+
         try {
             $message = $this->messageService->create($chat, $request);
         } catch (IndexMessageException $e) {

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImageRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\ImageResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\ImageService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +17,13 @@ use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
+    private $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     public function register(RegisterRequest $request)
     {
         try {
@@ -64,5 +74,16 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Successfully logged out'
         ], 200);
+    }
+
+
+    //ImageRequest
+    public function uploadImage(ImageRequest $request)
+    {
+        $data = $request->validated();
+        $user = $request->user();
+
+        $images = $this->imageService->create($user, $data);
+        return ImageResource::collection($images);
     }
 }

@@ -11,16 +11,16 @@ use Illuminate\Support\Carbon;
 class ChatService
 {
 
-    public function index(Request $request)
+    public function getChatsOrCreate(Request $request)
     {
-        $buyerId = $request->get('buyerId');
+        $user = $request->user();
         $sellerId = $request->get('sellerId');
 
-        $chat = Chat::where('buyer_id', $buyerId)->where('seller_id', $sellerId)->first();
+        $chat = Chat::where('buyer_id', $user->id)->where('seller_id', $sellerId)->first();
 
         if(!$chat){
             $chat = Chat::create([
-                'buyer_id' => $buyerId,
+                'buyer_id' => $user->id,
                 'seller_id' => $sellerId,
             ]);
         }

@@ -5,7 +5,6 @@
             <h4>Сортировка по статусу:</h4>
             <a href="{{route('products.index', 'str=wait')}}" class="btn border col-3 btn-outline-dark">Ожидающие</a>
             <a href="{{route('products.index', 'str=active')}}" class="btn border col-3 btn-outline-dark">Активные</a>
-            <a href="{{route('products.index', 'str=notActive')}}" class="btn border col-3 btn-outline-dark">Неактивные</a>
             <a href="{{route('products.index', 'str=reject')}}" class="btn border col-3 btn-outline-dark">Отклоненные</a>
         </div>
         @foreach ($products as $product)

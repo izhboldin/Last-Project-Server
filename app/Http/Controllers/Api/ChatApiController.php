@@ -30,7 +30,7 @@ class ChatApiController extends Controller
         $this->authorize('getOrCreate', Chat::class);
 
         try {
-            $chat = $this->chatService->index($request);
+            $chat = $this->chatService->getChatsOrCreate($request);
         } catch (CreateChatException $e) {
             return new JsonResponse(
                 [
