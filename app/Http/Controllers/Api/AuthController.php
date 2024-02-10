@@ -83,7 +83,7 @@ class AuthController extends Controller
         $data = $request->validated();
         $user = $request->user();
 
-        $images = $this->imageService->create($user, $data);
+        $images = $this->imageService->upload($user, $data, true, true);
         return ImageResource::collection($images);
     }
 }

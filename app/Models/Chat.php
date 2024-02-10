@@ -27,4 +27,10 @@ class Chat extends Model
     {
         return $this->hasMany(Message::class, 'chat_id');
     }
+
+
+    // public function scopeFilterByStatus($query, $status)
+    // {
+    //     $query->orderBy('created_at', $status);
+    // }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')
     ->group(function() {
-        Route::post('/images', [AuthController::class, 'uploadImage']);
+        Route::post('user
+        /images', [AuthController::class, 'uploadImage']);
     });
 
 
@@ -31,5 +33,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return new UserResource($request->user());
+});
+
+Route::middleware('auth:sanctum')->get('/get-user', function (Request $request) {
+    return new UserResource($request->user());
 });

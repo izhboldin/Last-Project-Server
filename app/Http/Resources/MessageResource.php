@@ -16,7 +16,9 @@ class MessageResource extends JsonResource
     {
         return [
             'user' => new UserResource($this->user),
+            'chat' => $this->chat_id,
             'message' => $this->message,
+            'created_at' => $this->created_at,
         ];
     }
 }

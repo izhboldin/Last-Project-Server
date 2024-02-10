@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\MessageSent;
+use App\Events\MessageWasCreated;
 use App\Exceptions\ListCategoryException;
 use App\Http\Resources\MessageResource;
 use App\Models\Chat;
@@ -13,12 +15,12 @@ use Illuminate\Support\Carbon;
 class MessageService
 {
 
-    public function index(Chat $chat,Request $request)
+    public function index(Chat $chat, Request $request)
     {
         return $chat->messages()->with('user')->get();
     }
 
-    public function create(Chat $chat,Request $request)
+    public function create(Chat $chat, Request $request)
     {
         $user = $request->user();
         $message = Message::create([
@@ -27,7 +29,13 @@ class MessageService
             'message' => $request->get('message'),
         ]);
 
-        return $message;
 
+        // event(new MessageWasCreated($message));
+        broadcast(new MessageWasCreated($message));
+
+        // event(new MessageSent($user, $message));
+        broadcast(new MessageSent($user, $message));
+
+        return $message;
     }
 }

@@ -9,15 +9,24 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageService
 {
-    public function create(Model $model, $data)
+    public function upload(Model $model, $data, $first = false, $replace = false)
     {
         $images = collect([]);
+
+        if ($first) {
+            $data['images'] = [$data['images'][0]];
+        }
+
+        if ($replace) {
+            $model->images()->delete();
+        }
+
         foreach ($data['images'] as $item) {
             $image = DB::transaction(function () use ($item, $model) {
                 $image = $model->images()->create([
                     'path' => $item['file']->hashName()
                 ]);
-                Storage::disk('public')->put('images/'.$item['file']->hashName(), $item['file']);
+                Storage::disk('public')->put('images/', $item['file']);
                 return $image;
             });
             $images->push($image);

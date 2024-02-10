@@ -57,6 +57,7 @@ class MessageApiController extends Controller
                 400
             );
         }
+
         return new MessageResource($message);
 
     }

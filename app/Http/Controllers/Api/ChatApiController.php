@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exceptions\CreateChatException;
+use App\Exceptions\IndexChatException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
 use App\Models\Chat;
 use App\Services\ChatService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,25 @@ class ChatApiController extends Controller
         $this->chatService = $chatService;
     }
 
-    public function getChatsOrCreate (Request $request)
+    public function index(Request $request)
+    {
+        $this->authorize('getOrCreate', Chat::class);
+        try {
+            $chats = $this->chatService->index($request);
+        } catch (IndexChatException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                ],
+                400
+            );
+        }
+
+        return ChatResource::collection($chats);
+        // return $chats;
+    }
+
+    public function getChatsOrCreate(Request $request)
     {
         $this->authorize('getOrCreate', Chat::class);
 
