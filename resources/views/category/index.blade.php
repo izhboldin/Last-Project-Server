@@ -33,22 +33,22 @@
                         alt="..." style="max-height: 30vh; object-fit: cover">
                     <div class="card-body p-2">
                         <h4 class="card-title text-center">{{ $category->name }}</h4>
-                        <p class="card-text">description: {{ $category->description }}</p>
+                        <p class="card-text">Описание: {{ $category->description }}</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Категория самостоятельная:
-                            {{ $category->is_main_category ? 'Да' : 'Нет' }}</li>
+                        {{-- <li class="list-group-item">Категория самостоятельная:
+                            {{ $category->is_main_category ? 'Да' : 'Нет' }}</li> --}}
                         <li class="list-group-item">Дата создания: {{ $category->created_at }}</li>
                     </ul>
                     <div class="card-body d-flex justify-content-between p-2">
                         <a href="{{ route('categories.show', $category->id) }}" type="button"
-                            class="btn btn-info btn-sm">info</a>
+                            class="btn btn-info btn-sm"><span class="material-symbols-outlined">info</span></a>
                         <a href="{{ route('categories.edit', $category->id) }}" type="button"
-                            class="btn btn-warning btn-sm">edit</a>
+                            class="btn btn-warning btn-sm"><span class="material-symbols-outlined">edit_note</span></a>
                         <a href="{{ route('categories.more', $category->id) }}" type="button"
-                            class="btn btn-success btn-sm">more</a>
+                            class="btn btn-success btn-sm">далее</a>
                         <a href="{{ route('parameters.show', $category->id) }}" type="button"
-                            class="btn btn-success btn-sm">parameter</a>
+                            class="btn btn-success btn-sm">Параметры</a>
                     </div>
                 </div>
             @endforeach
