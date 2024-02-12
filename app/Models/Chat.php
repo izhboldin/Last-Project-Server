@@ -28,6 +28,12 @@ class Chat extends Model
         return $this->hasMany(Message::class, 'chat_id');
     }
 
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'chat_id');
+    }
+
+
 
     // public function scopeFilterByStatus($query, $status)
     // {

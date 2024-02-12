@@ -19,6 +19,8 @@ return new class extends Migration
 
             $table->text('text');
             $table->text('reason');
+            $table->foreignId('chat_id')->nullable()->constrained('chats')->onDelete('cascade');
+            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('cascade');
             $table->enum('type', ['chat', 'product']);
 
             $table->enum('status', ['wait', 'active', 'reject'])->default('wait');

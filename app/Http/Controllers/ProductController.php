@@ -36,6 +36,12 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
+    public function get(Product $product)
+    {
+        $product = $product->with('options.parameter', 'category')->first();
+        return view('product.details', compact('product'));
+    }
+
     public function edit(Product $product)
     {
         return view('product.edit', compact('product'));

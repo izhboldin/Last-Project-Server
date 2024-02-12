@@ -26,7 +26,7 @@
                     </div>
                     <div class="row d-flex justify-content-between py-2">
 
-                        <div class="col-2">
+                        {{-- <div class="col-2">
                             <form action="{{ route('products.editStatus', $product->id) }}" method="post">
                                 @csrf
                                 @method('patch')
@@ -41,9 +41,9 @@
                                 <input type="hidden" value="reject" name="status">
                                 <button type="submit" class="btn border w-100 btn-outline-danger">Забанить</button>
                             </form>
-                        </div>
-                        <a href="{{route('products.edit', $product->id)}}" class="btn border col-3 btn-outline-info">Изменить</a>
-                        <button class="btn border col-3 btn-outline-info">Подробнее</button>
+                        </div> --}}
+                        <a href="{{route('products.edit', $product->id)}}" class="btn border col-4 btn-outline-info">Изменить</a>
+                        <a href="{{route('products.get', $product->id)}}" class="btn border col-4 btn-outline-info">Подробнее</a>
                     </div>
                 </div>
             </div>

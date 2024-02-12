@@ -23,4 +23,14 @@ class Complaint extends Model
         return $this->belongsTo(User::class, 'reported_user_id');
     }
 
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class, 'chat_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
 }

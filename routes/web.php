@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
+
 Route::get('/', function () {
     return view('home');
 })->name('welcome');
@@ -26,13 +28,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::resource('admin-panel', AdminPanelController::class);
 
 Route::middleware('auth')
-->prefix('users')
-->group(function(){
-    Route::get('/', [UserController::class, 'index'])->name('user.index');
-    Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
-    Route::post('/search', [UserController::class, 'search'])->name('user.search');
-});
+    ->prefix('users')
+    ->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('user.index');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+        Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
+        Route::post('/search', [UserController::class, 'search'])->name('user.search');
+    });
 
 
 Route::get('/example', [ExampleController::class, 'index']);

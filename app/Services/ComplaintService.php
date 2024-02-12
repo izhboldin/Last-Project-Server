@@ -33,18 +33,27 @@ class ComplaintService
             return [];
         }
 
-        return $complaint->with('complainantUser', 'reportedUser')->first();
+        $complaint->load('complainantUser', 'reportedUser');
+
+        if ($complaint['chat_id'] !== null && $complaint['type'] == 'chat') {
+            $complaint->load('chat.messages');
+        }
+        if ($complaint['product_id'] !== null && $complaint['type'] == 'product') {
+            $complaint->load('product.options.parameter', 'product.category');
+        }
+
+        return $complaint;
     }
 
     public function create(User $user, $data)
     {
         $data['complainant_user_id'] = $user->id;
 
-        $complaint = Complaint::where('complainant_user_id', $data['complainant_user_id'])->where('reported_user_id', $data['reported_user_id'])->first();
+        // $complaint = Complaint::where('complainant_user_id', $data['complainant_user_id'])->where('reported_user_id', $data['reported_user_id'])->first();
 
-        if (!$complaint) {
-            $complaint =  Complaint::create($data);
-        }
+        // if (!$complaint) {
+        $complaint =  Complaint::create($data);
+        // }
 
         return $complaint;
     }

@@ -49,7 +49,6 @@ class ComplaintApiController extends Controller
 
         $user = $request->user();
         $data = $request->validated();
-        // return $data;
 
         try {
             $complaints = $this->complaintService->create($user, $data);

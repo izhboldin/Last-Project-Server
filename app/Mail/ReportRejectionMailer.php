@@ -2,25 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\Ban;
+use App\Models\Complaint;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ReportApprovalMailer extends Mailable
+class ReportRejectionMailer extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $ban;
+        public $complaint;
     /**
      * Create a new message instance.
      */
-    public function __construct(Ban $ban)
+    public function __construct(Complaint $complaint)
     {
-        $this->ban = $ban;
+        $this->complaint = $complaint;
     }
 
     /**
@@ -29,7 +30,8 @@ class ReportApprovalMailer extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Сообщение об одобрении жалобы',
+            subject: 'Сообщение об отклонении жалобы',
+
         );
     }
 
@@ -39,9 +41,9 @@ class ReportApprovalMailer extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.report-approval-mailer',
+            view: 'email.report-reject-mailer',
             with: [
-                'ban' => $this->ban,
+                'complaint' => $this->complaint,
             ],
         );
     }

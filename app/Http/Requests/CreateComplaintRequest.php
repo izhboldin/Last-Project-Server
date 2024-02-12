@@ -18,6 +18,8 @@ class CreateComplaintRequest extends FormRequest
             'reason' => ['required', 'string'],
             'complainant_user_id' => ['nullable', 'integer'],
             'reported_user_id' => ['required', 'integer'],
+            'chat_id' => ['nullable', 'integer'],
+            'product_id' => ['nullable', 'integer'],
             'status' => ['required', 'string'],
             'type' => ['required', 'string'],
         ];
