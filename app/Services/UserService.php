@@ -31,25 +31,37 @@ class UserService
 
         $ban = Ban::where('complaint_id', $complaint->id)->with('user', 'complaint')->first();
 
-        if (!$ban) {
-            if ($data['is_permanent_ban'] != null) {
-                $ban = Ban::create([
-                    'complaint_id' => $complaint->id,
-                    'user_id' => $complaint->reported_user_id,
-                    'is_permanent_ban' => true,
-                ]);
+        if ($data['is_permanent_ban'] != null) {
+            $isPermanentBanData = [
+                'complaint_id' => $complaint->id,
+                'user_id' => $complaint->reported_user_id,
+                'expiry_time' => null,
+                'is_permanent_ban' => true,
+            ];
+            if (!$ban) {
+                $ban = Ban::create($isPermanentBanData);
             } else {
-                $ban = Ban::create([
-                    'complaint_id' => $complaint->id,
-                    'user_id' => $complaint->reported_user_id,
-                    'expiry_time' => $request->get('expiry_time'),
-                    'is_permanent_ban' => false,
-                ]);
+                $ban->update($isPermanentBanData);
+            }
+        } else {
+            $isTimeBanData = [
+                'complaint_id' => $complaint->id,
+                'user_id' => $complaint->reported_user_id,
+                'expiry_time' => $request->get('expiry_time'),
+                'is_permanent_ban' => false,
+            ];
+            if (!$ban) {
+                $ban = Ban::create($isTimeBanData);
+            } else {
+                $ban->update($isTimeBanData);
             }
         }
+
         $user = User::where('id', $complaint->reported_user_id)->first();
 
         SendReportApprovalMail::dispatch($user, $ban);
+
+        // Mail::to($user->email)->send(new ReportApprovalMailer($ban));
 
         $complaint->update(['status' =>  'active']);
     }

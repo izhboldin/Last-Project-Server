@@ -45,11 +45,6 @@ class CategoryController extends Controller
         return view('category.index', $this->getCategoryData($categories, $id));
     }
 
-    /**
-     * List of categories
-     *
-     * @return string
-     */
     public function index()
     {
         $this->authorize('read', Category::class);
@@ -136,5 +131,15 @@ class CategoryController extends Controller
         $categories = Category::where('name', 'like', '%' . $search . '%')->get();
 
         return view('category.index', $this->getCategoryData($categories));
+    }
+
+    public function back(Category $category)
+    {
+      $parentId = $category['parent_category_id'];
+      if($parentId == null){
+        return redirect()->route('categories.index');
+    }
+    return redirect()->route('categories.more', $parentId);
+
     }
 }

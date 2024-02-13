@@ -38,7 +38,7 @@ class ProductController extends Controller
 
     public function get(Product $product)
     {
-        $product = $product->with('options.parameter', 'category')->first();
+        $product = $product->load('options.parameter', 'category');
         return view('product.details', compact('product'));
     }
 
@@ -55,10 +55,13 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
-    public function update(ProductRequest $request, Product $product){
+    public function update(ProductRequest $request, Product $product)
+    {
         $data = $request->validated();
         $product->update($data);
 
         return redirect()->route('products.index');
     }
+
+
 }

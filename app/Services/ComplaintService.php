@@ -49,11 +49,19 @@ class ComplaintService
     {
         $data['complainant_user_id'] = $user->id;
 
-        // $complaint = Complaint::where('complainant_user_id', $data['complainant_user_id'])->where('reported_user_id', $data['reported_user_id'])->first();
+        if($data['type'] == 'chat'){
+            $complaint = Complaint::where('complainant_user_id', $data['complainant_user_id'])->where('reported_user_id', $data['reported_user_id'])->where('chat_id', $data['chat_id'])->first();
+        }
+        if($data['type'] == 'product'){
+            $complaint = Complaint::where('complainant_user_id', $data['complainant_user_id'])->where('reported_user_id', $data['reported_user_id'])->where('product_id', $data['product_id'])->first();
+        }
 
-        // if (!$complaint) {
+
+        if (!$complaint) {
         $complaint =  Complaint::create($data);
-        // }
+        } else {
+            $complaint->update($data);
+        }
 
         return $complaint;
     }

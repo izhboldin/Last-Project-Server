@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'role' => $this->role,
             'phone' => $this->phone,
             'image' => new ImageResource($this->image),
+            'ban' => BanResource::collection($this->ban),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

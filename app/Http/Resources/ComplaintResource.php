@@ -20,8 +20,8 @@ class ComplaintResource extends JsonResource
             'reason' => $this->reason,
             'type' => $this->type,
             'status' => $this->status,
-            'complainant_user_id' => new UserResource($this->complainantUser),
-            'reported_user_id' => new UserResource($this->reportedUser),
+            // 'complainant_user_id' => new UserResource($this->complainantUser),
+            // 'reported_user_id' => new UserResource($this->reportedUser),
             'created_at' => $this->created_at,
         ];
     }

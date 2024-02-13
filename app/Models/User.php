@@ -46,4 +46,9 @@ class User extends Authenticatable
             return $this->images->first();
         });
     }
+
+    public function ban()
+    {
+        return $this->hasMany(Ban::class, 'user_id');
+    }
 }

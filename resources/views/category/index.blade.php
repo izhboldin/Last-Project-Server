@@ -18,13 +18,14 @@
     <div class="container mt-3">
         <div class="row justify-content-start">
             @if ($id)
-                <span>Поиск за {{ $id }} id</span>
+                <a href="{{ route('categories.back', $id) }}" class="btn border col-3 btn-secondary mb-3">Назад</a>
             @endif
+
 
             @if (count($categories) === 0)
                 <h1 class="text-center mt-5">Категории отсутствуют</h1>
             @else
-                <span>всего {{ $allQuantityCategory }} категорий, на данной странице {{ $quantityCategory }}</span>
+                <span class="mb-2">всего {{ $allQuantityCategory }} категорий, на данной странице {{ $quantityCategory }}</span>
             @endif
 
             @foreach ($categories as $category)
