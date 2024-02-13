@@ -6,7 +6,8 @@ RUN apk --no-cache update \
         autoconf \
         g++ \
         make \
-        openssl-dev
+        openssl-dev \
+        linux-headers
 
 # Установка расширений PHP
 RUN pecl install redis \

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +17,9 @@ class ImageService
         }
 
         if ($replace) {
-            $model->images()->delete();
+            foreach ($model->images as $image) {
+                $image->delete();
+            }
         }
 
         foreach ($data['images'] as $item) {
@@ -33,5 +34,12 @@ class ImageService
         }
 
         return $images;
+    }
+
+    public function delete(Model $model, $data)
+    {
+        foreach($model->images()->whereIn($data['images'])->get() as $image) {
+            $image->delete();
+        }
     }
 }

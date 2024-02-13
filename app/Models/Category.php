@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasImages;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImages;
 
     protected $table = 'categories';
 
@@ -26,10 +28,6 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_category_id')->with('children');
     }
-    public function childrenId()
-    {
-        return $this->hasMany(Category::class, 'parent_category_id', 'id')->with('childrenId');
-    }
 
     public function parameters()
     {
@@ -39,6 +37,13 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function image(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->images->first();
+        });
     }
 
     // public function getAllDescendantsProducts()

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasImages;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImages;
 
     protected $table = 'products';
 
@@ -27,6 +29,8 @@ class Product extends Model
     {
         return $this->belongsToMany(Option::class, 'product_options', 'product_id', 'option_id');
     }
+
+
 
     public function scopeSearchByStatus($query, $str)
     {

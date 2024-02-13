@@ -13,6 +13,13 @@ class Image extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
+    protected static function booted()
+    {
+        static::deleting(function($image) {
+            Storage::disk('public')->delete('images/'. $image->path);
+        });
+    }
+
     public function imageable(): MorphTo
     {
         return $this->morphTo();

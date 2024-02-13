@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\CategoryApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FilterCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ChooseCategoryResource;
 use App\Http\Resources\GetAllCategoryResource;
 use App\Models\Category;
@@ -32,9 +33,10 @@ class CategoryApiController extends Controller
             ], 400);
         }
         // return $request->get('categoryId');
-        return $categories;
+        // return $categories;
+        // return CategoryResource::collection($categories);;
 
-        return GetAllCategoryResource::collection($categories);
+        return GetAllCategoryResource::collection($categories)->flatten();
     }
 
     public function get(string $id)

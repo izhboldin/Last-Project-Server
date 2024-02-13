@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\TaskController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')
     ->group(function() {
-        Route::post('user
-        /images', [AuthController::class, 'uploadImage']);
+        Route::post('user/images', [AuthController::class, 'uploadImage']);
+        Route::post('product/{product}/images', [ProductApiController::class, 'uploadImage']);
+        Route::post('product/{product}/images/delete', [ProductApiController::class, 'deleteImages']);
     });
 
 

@@ -25,13 +25,24 @@
             @if (count($categories) === 0)
                 <h1 class="text-center mt-5">Категории отсутствуют</h1>
             @else
-                <span class="mb-2">всего {{ $allQuantityCategory }} категорий, на данной странице {{ $quantityCategory }}</span>
+                <span class="mb-2">всего {{ $allQuantityCategory }} категорий, на данной странице
+                    {{ $quantityCategory }}</span>
             @endif
 
             @foreach ($categories as $category)
                 <div class="card col-md-3 mb-4 p-2 me-5">
-                    <img src="https://i.ucrazy.ru/files/pics/2023.10/2023-10-17-21-53-072.webp" class="card-img-top"
+                    {{-- <pre>
+                        {{$category}}
+                    </pre> --}}
+                    @if (count($category->images) !== 0)
+                    <img src="{{$category->image?->full_url}}" class="card-img-top"
                         alt="..." style="max-height: 30vh; object-fit: cover">
+                    @endif
+                    @if (count($category->images) === 0)
+                    <img src="http://localhost:8080/storage/images/no_image_available.png" class="card-img-top"
+                        alt="..." style="max-height: 30vh; object-fit: cover">
+                    @endif
+
                     <div class="card-body p-2">
                         <h4 class="card-title text-center">{{ $category->name }}</h4>
                         <p class="card-text">Описание: {{ $category->description }}</p>

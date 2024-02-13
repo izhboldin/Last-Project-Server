@@ -12,12 +12,12 @@ class CategoryService
 
     public function create($data)
     {
-        Category::create($data);
+       return Category::create($data);
     }
 
     public function update($data, Category $category)
     {
-        $category->update($data);
+       return $category->update($data);
     }
 
     public function delete(Category $category)

@@ -8,12 +8,16 @@ use App\Exceptions\DeleteProductException;
 use App\Exceptions\IndexProductException;
 use App\Exceptions\UpdateProductException;
 use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\DeleteImagesRequest;
+use App\Http\Requests\ImageRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ImageResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Policies\CategoryPolicy;
 use App\Policies\ProductPolicy;
+use App\Services\ImageService;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -31,9 +35,12 @@ class ProductApiController extends Controller
      */
     private $productService;
 
-    public function __construct(ProductService $productService)
+    private $imageService;
+
+    public function __construct(ProductService $productService, ImageService $imageService)
     {
         $this->productService = $productService;
+        $this->imageService = $imageService;
     }
 
     public function index(Request $request)
@@ -119,5 +126,22 @@ class ProductApiController extends Controller
         }
 
         return new ProductResource($product);
+    }
+
+    //ImageRequest
+    public function uploadImage(Category $category, ImageRequest $request)
+    {
+        $data = $request->validated();
+
+        $images = $this->imageService->upload($category, $data);
+
+        return ImageResource::collection($images);
+    }
+
+    public function deleteImages(Category $category, DeleteImagesRequest $request)
+    {
+        $data = $request->validated();
+
+        $this->imageService->delete($category, $data);
     }
 }

@@ -19,6 +19,8 @@ class CreateCategoryRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
             'is_main_category' => ['required', 'boolean'],
+            'images' => ['array'],
+            'images.*.file' => ['required', 'image'],
         ];
     }
 }

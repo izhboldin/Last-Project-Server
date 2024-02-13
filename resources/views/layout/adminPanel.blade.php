@@ -59,7 +59,7 @@
                 <div class="sidebar-sticky mt-5">
                     <ul class="nav flex-column">
                         <li class="nav-item mb-3">
-                            <h2 class="text-white text-center">BUE-SALE</h2>
+                            <h2 class="text-white text-center">BUY-SELL</h2>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active d-flex align-items-center justify-content-center"

@@ -8,8 +8,10 @@ use App\Exceptions\UpdateCategoryException;
 
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\SearchRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
+use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,16 +24,20 @@ class CategoryController extends Controller
      * @param CategoryService
      */
     private $categoryService;
+    private $imageService;
 
-    public function __construct(CategoryService $categoryService)
+
+    public function __construct(CategoryService $categoryService, ImageService $imageService)
     {
         $this->categoryService = $categoryService;
+        $this->imageService = $imageService;
     }
 
     private function getCategoryData($categories, $id = null)
     {
         $allQuantityCategory = Category::count();
         $quantityCategory = $categories->count();
+        $categories = CategoryResource::collection($categories);
 
         return compact('categories', 'id', 'allQuantityCategory', 'quantityCategory');
     }
@@ -57,6 +63,7 @@ class CategoryController extends Controller
     public function create()
     {
         $this->authorize('create', Category::class);
+
         $categories = Category::all();
 
         return view('category.create', compact('categories'));
@@ -66,9 +73,13 @@ class CategoryController extends Controller
     {
         $this->authorize('create', Category::class);
 
+        $data = $request->validated();
+
         try {
-            $data = $request->validated();
-            $this->categoryService->create($data);
+            $category = $this->categoryService->create($data);
+            if (isset($data['images'])) {
+                $this->imageService->upload($category, $data, true, true);
+            }
         } catch (CreateCategoryException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
@@ -95,11 +106,13 @@ class CategoryController extends Controller
 
     public function update(CreateCategoryRequest $request, Category $category)
     {
+
         $this->authorize('update', $category);
         $data = $request->validated();
 
         try {
             $this->categoryService->update($data, $category);
+            $this->imageService->upload($category, $data, true, true);
         } catch (UpdateCategoryException $e) {
             // TODO!!! implement in this way -> return redirect()->back()->withErrors(['error' => $e->getMessage()]);
             return new JsonResponse([
@@ -135,11 +148,10 @@ class CategoryController extends Controller
 
     public function back(Category $category)
     {
-      $parentId = $category['parent_category_id'];
-      if($parentId == null){
-        return redirect()->route('categories.index');
-    }
-    return redirect()->route('categories.more', $parentId);
-
+        $parentId = $category['parent_category_id'];
+        if ($parentId == null) {
+            return redirect()->route('categories.index');
+        }
+        return redirect()->route('categories.more', $parentId);
     }
 }

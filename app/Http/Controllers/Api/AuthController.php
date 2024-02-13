@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\CreateImageForUserException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\RegisterRequest;
@@ -10,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\ImageService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -69,21 +71,27 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Session::flush();
+        if (Auth::check()) {
+            $request->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'Logged out'], 200);
+        }
 
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ], 200);
+        return response()->json(['message' => 'No user to log out'], 200);
     }
-
 
     //ImageRequest
     public function uploadImage(ImageRequest $request)
     {
         $data = $request->validated();
         $user = $request->user();
+        try {
+            $images = $this->imageService->upload($user, $data, true, true);
+        } catch (CreateImageForUserException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], 400);
+        }
 
-        $images = $this->imageService->upload($user, $data, true, true);
         return ImageResource::collection($images);
     }
 }
