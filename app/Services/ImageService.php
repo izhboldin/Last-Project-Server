@@ -38,7 +38,7 @@ class ImageService
 
     public function delete(Model $model, $data)
     {
-        foreach($model->images()->whereIn($data['images'])->get() as $image) {
+        foreach ($model->images()->whereIn($data['images'])->get() as $image) {
             $image->delete();
         }
     }

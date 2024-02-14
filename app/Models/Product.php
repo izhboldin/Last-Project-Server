@@ -30,6 +30,13 @@ class Product extends Model
         return $this->belongsToMany(Option::class, 'product_options', 'product_id', 'option_id');
     }
 
+    // public function images(): Attribute
+    // {
+    //     return Attribute::get(function () {
+    //         return $this->images->get();
+    //     });
+    // }
+
 
 
     public function scopeSearchByStatus($query, $str)

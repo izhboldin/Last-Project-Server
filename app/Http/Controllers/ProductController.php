@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class ProductController extends Controller
             $products->searchByStatus($str);
         }
         $products = $products->get();
+        $products = ProductResource::collection($products);
 
         return view('product.index', compact('products'));
     }

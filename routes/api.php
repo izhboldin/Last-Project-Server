@@ -25,8 +25,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')
     ->group(function() {
         Route::post('user/images', [AuthController::class, 'uploadImage']);
-        Route::post('product/{product}/images', [ProductApiController::class, 'uploadImage']);
-        Route::post('product/{product}/images/delete', [ProductApiController::class, 'deleteImages']);
+        Route::post('product/{product}/images', [ProductApiController::class, 'uploadImages']);
+        Route::post('product/{product}/{image}/update', [ProductApiController::class, 'updateImage']);
+        Route::get('product/{image}/images/delete', [ProductApiController::class, 'deleteImage']);
+        // Route::post('product/{product}/images/delete', [ProductApiController::class, 'deleteImages']);
     });
 
 

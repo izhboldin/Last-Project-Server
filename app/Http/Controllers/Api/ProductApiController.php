@@ -11,9 +11,11 @@ use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\DeleteImagesRequest;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\GetAllProductResource;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Product;
 use App\Policies\CategoryPolicy;
 use App\Policies\ProductPolicy;
@@ -57,7 +59,7 @@ class ProductApiController extends Controller
             );
         }
 
-        return $products;
+        return GetAllProductResource::collection($products);
     }
 
     public function get(string $id)
@@ -129,19 +131,31 @@ class ProductApiController extends Controller
     }
 
     //ImageRequest
-    public function uploadImage(Category $category, ImageRequest $request)
+    public function uploadImages(ImageRequest $request, Product $product)
     {
+
         $data = $request->validated();
 
-        $images = $this->imageService->upload($category, $data);
+        $images = $this->imageService->upload($product, $data);
 
         return ImageResource::collection($images);
     }
 
-    public function deleteImages(Category $category, DeleteImagesRequest $request)
+    public function updateImage(ImageRequest $request, Product $product, Image $image)
     {
         $data = $request->validated();
+        $image->delete();
+        $images = $this->imageService->upload($product, $data);
 
-        $this->imageService->delete($category, $data);
+        return ImageResource::collection($images);
+    }
+
+    public function deleteImage( Image $image)
+    {
+        // $data = $request->validated();
+        // $model->images()->whereIn($data['images'])->get()
+        $image->delete();
+        return new ImageResource($image);
+        // $this->imageService->delete($product, $data);
     }
 }

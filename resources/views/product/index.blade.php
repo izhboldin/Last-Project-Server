@@ -3,16 +3,26 @@
     <div class="container">
         <div class="row d-flex justify-content-between py-2">
             <h4>Сортировка по статусу:</h4>
-            <a href="{{route('products.index', 'str=wait')}}" class="btn border col-3 btn-outline-dark">Ожидающие</a>
-            <a href="{{route('products.index', 'str=active')}}" class="btn border col-3 btn-outline-dark">Активные</a>
-            <a href="{{route('products.index', 'str=reject')}}" class="btn border col-3 btn-outline-dark">Отклоненные</a>
+            <a href="{{ route('products.index', 'str=wait') }}" class="btn border col-3 btn-outline-dark">Ожидающие</a>
+            <a href="{{ route('products.index', 'str=active') }}" class="btn border col-3 btn-outline-dark">Активные</a>
+            <a href="{{ route('products.index', 'str=reject') }}" class="btn border col-3 btn-outline-dark">Отклоненные</a>
         </div>
         @foreach ($products as $product)
             <div class="card mb-3 w-100">
                 <div class="row g-0 justify-content-center">
                     <div class="col-md-4">
-                        <img src="https://ireland.apollo.olxcdn.com:443/v1/files/zo9y2rkxi8941-UA/image;s=1000x700"
-                            class="img-fluid rounded object-fit-cover m-2" style="width: 35vh; height: 20vh" alt="...">
+                        {{ $product->image }}
+                        {{-- <img src="https://ireland.apollo.olxcdn.com:443/v1/files/zo9y2rkxi8941-UA/image;s=1000x700"
+                            class="img-fluid rounded object-fit-cover m-2" style="width: 35vh; height: 20vh" alt="..."> --}}
+                        @if (count($product->images) !== 0)
+                            <img src="{{ $product->images[0]?->full_url }}" class="img-fluid rounded object-fit-cover m-2"
+                                style="width: 35vh; height: 20vh" alt="...">
+                        @endif
+                        @if (count($product->images) === 0)
+                            <img src="http://localhost:8080/storage/images/no_image_available.png"
+                                class="img-fluid rounded object-fit-cover m-2" style="width: 35vh; height: 20vh"
+                                alt="...">
+                        @endif
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -42,8 +52,10 @@
                                 <button type="submit" class="btn border w-100 btn-outline-danger">Забанить</button>
                             </form>
                         </div> --}}
-                        <a href="{{route('products.edit', $product->id)}}" class="btn border col-4 btn-outline-info">Изменить</a>
-                        <a href="{{route('products.get', $product->id)}}" class="btn border col-4 btn-outline-info">Подробнее</a>
+                        <a href="{{ route('products.edit', $product->id) }}"
+                            class="btn border col-4 btn-outline-info">Изменить</a>
+                        <a href="{{ route('products.get', $product->id) }}"
+                            class="btn border col-4 btn-outline-info">Подробнее</a>
                     </div>
                 </div>
             </div>

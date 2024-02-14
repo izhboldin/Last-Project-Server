@@ -18,6 +18,7 @@ class ChooseCategoryResource extends JsonResource
             'id' => $this->id,
             'parent_category_id' => $this->parent_category_id,
             'name' => $this->name,
+            'image' => new ImageResource($this->image),
             'parameters' => ChooseParameterResource::collection($this->parameters),
             'children' =>  GetAllCategoryResource::collection($this->children),
         ];
