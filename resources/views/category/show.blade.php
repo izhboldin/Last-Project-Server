@@ -21,7 +21,7 @@
                                 <form action="{{ route('categories.delete', $category->id) }}" method="POST">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
                                 </form>
                             </div>
                         </div>

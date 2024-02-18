@@ -12,7 +12,6 @@ class AdminPanelController extends Controller
      */
     public function index()
     {
-
         return view('layout.adminPanel');
     }
 

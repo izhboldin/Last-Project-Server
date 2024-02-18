@@ -67,7 +67,16 @@
         @if ($complaint->product)
             <h3>Объявление на которое пришла жалоба:</h3>
             <div class="border p-3 mb-2">
-                <img src="..." class="img-fluid" alt="...">
+                @if (count($complaint->product->images) !== 0)
+                    @foreach ($complaint->product->images as $image)
+                        <img src="{{ $image?->full_url }}" class="img-fluid rounded object-fit-cover m-2"
+                            style="width: 35vh; height: 20vh" alt="...">
+                    @endforeach
+                @endif
+                @if (count($complaint->product->images) === 0)
+                    <img src="http://localhost:8080/storage/images/no_image_available.png"
+                        class="img-fluid rounded object-fit-cover m-2" style="width: 35vh; height: 20vh" alt="...">
+                @endif
                 <h3 class=>{{ $complaint->product->title }}</h3>
                 <p class="pb-0 mb-2">Описание: {{ $complaint->product->description }}</p>
                 <p class="pb-0 mb-2">Стоимость: {{ $complaint->product->price }}</p>

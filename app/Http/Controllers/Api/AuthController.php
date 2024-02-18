@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exceptions\CreateImageForUserException;
+use App\Exceptions\RegisterApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\AuthApiService;
 use App\Services\ImageService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -20,26 +22,22 @@ use Illuminate\Support\Facades\Session;
 class AuthController extends Controller
 {
     private $imageService;
+    private $authApiService;
 
-    public function __construct(ImageService $imageService)
+    public function __construct(ImageService $imageService, AuthApiService $authApiService)
     {
         $this->imageService = $imageService;
+        $this->authApiService = $authApiService;
     }
 
     public function register(RegisterRequest $request)
     {
         try {
-            $user = User::create([
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'phone' => $request->get('phone'),
-                'password' => Hash::make($request->get('password')),
-            ])->fresh();
-        } catch (\Exception $e) {
+            $user = $this->authApiService->register($request);
+            $token = $user->createToken('Token Name')->plainTextToken;
+        } catch (RegisterApiException $e) {
             return $e->getMessage();
         }
-
-        $token = $user->createToken('Token Name')->plainTextToken;
 
         return [
             'user' => new UserResource($user),
@@ -79,9 +77,10 @@ class AuthController extends Controller
         return response()->json(['message' => 'No user to log out'], 200);
     }
 
-    //ImageRequest
     public function uploadImage(ImageRequest $request)
     {
+        $this->authorize('updateImage', User::class);
+
         $data = $request->validated();
         $user = $request->user();
         try {

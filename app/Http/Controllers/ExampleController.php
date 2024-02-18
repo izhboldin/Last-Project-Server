@@ -13,6 +13,5 @@ class ExampleController extends Controller
             0,
             0
         ];
-        // return view('test');
     }
 }

@@ -23,9 +23,9 @@ class CategoryController extends Controller
      *
      * @param CategoryService
      */
+
     private $categoryService;
     private $imageService;
-
 
     public function __construct(CategoryService $categoryService, ImageService $imageService)
     {
@@ -42,7 +42,7 @@ class CategoryController extends Controller
         return compact('categories', 'id', 'allQuantityCategory', 'quantityCategory');
     }
 
-    public function myView(Request $request, string $id)
+    public function myView(string $id)
     {
         $this->authorize('read', Category::class);
 
@@ -54,7 +54,6 @@ class CategoryController extends Controller
     public function index()
     {
         $this->authorize('read', Category::class);
-        // здесь применять все фильтра и сортировки (создать метод search в сервисе)
         $categories = Category::whereNull('parent_category_id')->get();
 
         return view('category.index', $this->getCategoryData($categories));
@@ -114,7 +113,6 @@ class CategoryController extends Controller
             $this->categoryService->update($data, $category);
             $this->imageService->upload($category, $data, true, true);
         } catch (UpdateCategoryException $e) {
-            // TODO!!! implement in this way -> return redirect()->back()->withErrors(['error' => $e->getMessage()]);
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], 400);
@@ -141,8 +139,13 @@ class CategoryController extends Controller
     public function search(SearchRequest $request)
     {
         $search = $request->get('search');
+        if (!$search) {
+            return redirect()->route('category.index');
+        }
         $categories = Category::where('name', 'like', '%' . $search . '%')->get();
-
+        // if(!$categories){
+        //     return view('category.index', $categories);
+        // }
         return view('category.index', $this->getCategoryData($categories));
     }
 

@@ -4,7 +4,16 @@
         <a href="{{ redirect()->back()->getTargetUrl() }}" class="btn border col-3 btn-secondary mb-3">Назад</a>
         <div class="p-3 mb-3 w-100">
             <div class="">
-                <img src="..." class="img-fluid" alt="...">
+                @if (count($product->images) !== 0)
+                    @foreach ($product->images as $image)
+                        <img src="{{ $image?->full_url }}" class="img-fluid rounded object-fit-cover m-2"
+                            style="width: 35vh; height: 20vh" alt="...">
+                    @endforeach
+                @endif
+                @if (count($product->images) === 0)
+                    <img src="http://localhost:8080/storage/images/no_image_available.png"
+                        class="img-fluid rounded object-fit-cover m-2" style="width: 35vh; height: 20vh" alt="...">
+                @endif
                 <h3 class=>{{ $product->title }}</h3>
                 <p class="pb-0 mb-2">Описание: {{ $product->description }}</p>
                 <p class="pb-0 mb-2">Стоимость: {{ $product->price }}</p>

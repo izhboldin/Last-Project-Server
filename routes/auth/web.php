@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('login', [AuthController::class, 'loginView'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+Route::middleware('auth')->get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 // Route::middleware('auth')
 //     ->resource('product', ProductController::class);

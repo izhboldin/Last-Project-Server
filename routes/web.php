@@ -17,13 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
 
-Route::get('/', function () {
-    return view('home');
-})->name('welcome');
+// Route::get('/', function () {
+//     return view('home');
+// })->name('welcome');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->get('/', [HomeController::class, 'index'])->name('home');
 
 Route::resource('admin-panel', AdminPanelController::class);
 
@@ -33,7 +32,8 @@ Route::middleware('auth')
         Route::get('/', [UserController::class, 'index'])->name('user.index');
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
-        Route::post('/search', [UserController::class, 'search'])->name('user.search');
+        Route::get('/search', [UserController::class, 'search'])->name('user.search');
+        Route::delete('/{user}/delete', [UserController::class, 'delete'])->name('user.delete');
     });
 
 

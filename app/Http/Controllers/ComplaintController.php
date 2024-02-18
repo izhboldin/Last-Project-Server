@@ -38,8 +38,6 @@ class ComplaintController extends Controller
         }
 
         return view('complaints.index', compact('complaints'));
-
-        // return $complaints;
     }
 
     public function get(Request $request, Complaint $complaint)

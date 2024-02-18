@@ -24,7 +24,7 @@ class ComplaintService
     {
         $complaints = Complaint::query()->where('status', 'wait')->with('complainantUser', 'reportedUser');
 
-        return $complaints->get();
+        return $complaints->paginate(5);;
     }
 
     public function get(Request $request, Complaint $complaint)

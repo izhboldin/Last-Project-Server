@@ -19,8 +19,6 @@ class ParameterController extends Controller
         $this->parameterService = $parameterService;
     }
 
-
-
     public function show(string $id)
     {
         $parameters = Parameter::where('category_id', '=', $id)->with(['options'])->get();

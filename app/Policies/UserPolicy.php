@@ -14,4 +14,8 @@ class UserPolicy
     {
         return $user->role === 'admin';
     }
+    public function updateImage(User $user,)
+    {
+        return true;
+    }
 }

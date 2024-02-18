@@ -11,7 +11,7 @@
             <div class="card mb-3 w-100">
                 <div class="row g-0 justify-content-center">
                     <div class="col-md-4">
-                        {{ $product->image }}
+
                         {{-- <img src="https://ireland.apollo.olxcdn.com:443/v1/files/zo9y2rkxi8941-UA/image;s=1000x700"
                             class="img-fluid rounded object-fit-cover m-2" style="width: 35vh; height: 20vh" alt="..."> --}}
                         @if (count($product->images) !== 0)
@@ -60,6 +60,12 @@
                 </div>
             </div>
         @endforeach
+        @if(request()->has('str'))
+    {{-- Код, который нужно скрыть --}}
+@else
+    <div>{{ $products->links() }}</div>
+@endif
+
 
     </div>
     {{-- <header class="navbar navbar-expand-lg navbar-light border-bottom">

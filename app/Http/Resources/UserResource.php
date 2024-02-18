@@ -20,9 +20,9 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role,
             'phone' => $this->phone,
+            'created_at' => $this->created_at,
             'image' => new ImageResource($this->image),
             'ban' => BanResource::collection($this->ban),
-            'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }

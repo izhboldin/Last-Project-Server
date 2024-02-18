@@ -22,8 +22,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
 Route::middleware('auth:sanctum')
-    ->group(function() {
+    ->group(function () {
+        Route::get('generate-pdf', [App\Http\Controllers\PDFController::class, 'generatePDF']);
         Route::post('user/images', [AuthController::class, 'uploadImage']);
         Route::post('product/{product}/images', [ProductApiController::class, 'uploadImages']);
         Route::post('product/{product}/{image}/update', [ProductApiController::class, 'updateImage']);

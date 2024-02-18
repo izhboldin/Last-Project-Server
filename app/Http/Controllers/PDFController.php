@@ -2,24 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PdfCreate;
+use App\Jobs\CreatePdfForUser;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PDFController extends Controller
 {
-    public function generatePDF()
+    public function generatePDF(Request $request)
     {
-        $users = User::get();
-
-        $data = [
-            'title' => "думаешь",
-            'date' => date('m/d/Y'),
-            'users' => $users
-        ];
-
-        $pdf = PDF::loadView('pdf.usersPdf', $data);
-
-        return $pdf->download('users-lists.pdf');
+        CreatePdfForUser::dispatch($request->user());
     }
 }

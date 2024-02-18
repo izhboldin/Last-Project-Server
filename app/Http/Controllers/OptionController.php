@@ -27,12 +27,6 @@ class OptionController extends Controller
         $parameter = Parameter::where('id', '=', $parameter_id)->get();
 
         return redirect()->route('parameters.show', $parameter['0']['category_id']);
-
-        // if($category['0']['parent_category_id'] == null){
-        //     return redirect()->route('categories.index');
-        // }else{
-        //     return redirect()->route('categories.more', $category['0']['parent_category_id']);
-        // }
     }
 
     public function create(OptionRequest $request, string $id)

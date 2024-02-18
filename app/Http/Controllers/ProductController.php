@@ -30,9 +30,10 @@ class ProductController extends Controller
         $str = $request->get('str');
 
         if ($str !== null) {
-            $products->searchByStatus($str);
+            $products = $products->searchByStatus($str)->get();
+        } else{
+            $products = $products->paginate(3);
         }
-        $products = $products->get();
         $products = ProductResource::collection($products);
 
         return view('product.index', compact('products'));

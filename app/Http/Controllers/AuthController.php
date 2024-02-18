@@ -19,13 +19,21 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = $request->user();
 
-            Auth::login($user);
+            if ($user->role === 'admin' || $user->role === 'moderator') {
+                Auth::login($user);
 
-            return redirect()->route('categories.index');
+                return redirect()->route('home');
+            } else {
+                Auth::logout();
+                return redirect()->route('login')->withErrors(['message' => 'Недостаточно прав для входа']);
+            }
         } else {
-            return response()->json([
-                'message' => 'Неверный емейл, или пароль'
-            ], 400);
+            return redirect()->route('login')->withErrors(['message' => 'Неверный емейл или пароль']);
         }
+    }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

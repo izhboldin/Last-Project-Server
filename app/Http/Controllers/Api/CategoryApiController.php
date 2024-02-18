@@ -32,9 +32,6 @@ class CategoryApiController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
-        // return $request->get('categoryId');
-        // return $categories;
-        // return CategoryResource::collection($categories);;
 
         return GetAllCategoryResource::collection($categories)->flatten();
     }

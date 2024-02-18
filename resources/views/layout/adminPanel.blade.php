@@ -61,35 +61,35 @@
                         <li class="nav-item mb-3">
                             <h2 class="text-white text-center">BUY-SELL</h2>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mb-2">
                             <a class="nav-link active d-flex align-items-center justify-content-center"
                                 href="{{ route('home') }}">
                                 <span class="material-symbols-outlined">home</span>
                                 <span>HOME</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mb-2">
                             <a class="nav-link active d-flex align-items-center justify-content-center"
                                 href="{{ route('user.index') }}">
                                 <span class="material-symbols-outlined">group</span>
                                 <span>USERS</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mb-2">
                             <a class="nav-link active d-flex align-items-center justify-content-center"
                                 href="{{ route('categories.index') }}">
                                 <span class="material-symbols-outlined">category</span>
                                 <span>CATEGORIES</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mb-2">
                             <a class="nav-link active d-flex align-items-center justify-content-center"
                                 href="{{ route('products.index') }}">
                                 <span class="material-symbols-outlined">inventory_2</span>
                                 <span>PRODUCTS</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mb-2">
                             <a class="nav-link active d-flex align-items-center justify-content-center"
                                 href="{{ route('complaints.index') }}">
                                 <span class="material-symbols-outlined">sync_problem</span>

@@ -29,7 +29,7 @@ class ChatApiController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('getOrCreate', Chat::class);
+        $this->authorize('index', Chat::class);
         try {
             $chats = $this->chatService->index($request);
         } catch (IndexChatException $e) {
@@ -42,12 +42,11 @@ class ChatApiController extends Controller
         }
 
         return ChatResource::collection($chats);
-        // return $chats;
     }
 
     public function getChatsOrCreate(Request $request)
     {
-        $this->authorize('getOrCreate', Chat::class);
+        $this->authorize('index', Chat::class);
 
         try {
             $chat = $this->chatService->getChatsOrCreate($request);

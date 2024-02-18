@@ -47,7 +47,6 @@ class ProductApiController extends Controller
 
     public function index(Request $request)
     {
-
         try {
             $products = $this->productService->index($request);
         } catch (IndexProductException $e) {
@@ -64,9 +63,7 @@ class ProductApiController extends Controller
 
     public function get(string $id)
     {
-        // $this->authorize('read', Product::class);
-
-        $product = Product::with('options.parameter', 'category', 'user')->find($id);
+        $product = Product::with('options.parameter', 'category', 'user')->findOrNew($id);
 
         return new ProductResource($product);
     }
@@ -130,7 +127,6 @@ class ProductApiController extends Controller
         return new ProductResource($product);
     }
 
-    //ImageRequest
     public function uploadImages(ImageRequest $request, Product $product)
     {
 
@@ -150,12 +146,9 @@ class ProductApiController extends Controller
         return ImageResource::collection($images);
     }
 
-    public function deleteImage( Image $image)
+    public function deleteImage(Image $image)
     {
-        // $data = $request->validated();
-        // $model->images()->whereIn($data['images'])->get()
         $image->delete();
         return new ImageResource($image);
-        // $this->imageService->delete($product, $data);
     }
 }

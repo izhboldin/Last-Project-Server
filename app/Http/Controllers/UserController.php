@@ -30,7 +30,7 @@ class UserController extends Controller
     public function index()
     {
 
-        $users = User::all();
+        $users = User::paginate(10);
         return view('user.index', compact('users'));
     }
 
@@ -53,10 +53,21 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
+    public function delete(User $user)
+    {
+        $user->delete();
+        $users = User::paginate(10);
+
+        return view('user.index', compact('users'));
+    }
+
     public function search(SearchRequest $request)
     {
-        $search = $request->get('search');
-        $users = User::where('name', 'like', '%' . $search . '%')->get();
+        $search = $request->input('search');
+        if ($search == '') {
+            return redirect()->route('user.index');
+        }
+        $users = User::where('name', 'like', '%' . $search . '%')->paginate(10);
 
         return view('user.index', compact('users'));
     }
